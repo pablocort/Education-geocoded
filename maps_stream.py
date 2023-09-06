@@ -1,5 +1,7 @@
 import pandas as pd
 import streamlit as st
+import subprocess
+subprocess.run(["pip", "install", "geopandas"])
 import geopandas as gpd
 import os
 os.getcwd()
