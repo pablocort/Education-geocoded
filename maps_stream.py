@@ -5,7 +5,7 @@ import streamlit as st
 st.title("Retos de trayectoria")
 
 # Display the text
-st.write("Esta es una aplicación de datos simple que muestra 'Retos de trayectoria'.")
+st.write("Esta es una aplicación mediante la cual podremos visualizar nuestro indicadores de tranformación de manera transversal.")
 
 
 
