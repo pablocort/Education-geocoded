@@ -4,6 +4,7 @@ pandas
 streamlit
 yfinance
 geopandas
+sys
 #HeatMap
 #FastMarkerCluster
 # Add other dependencies here
