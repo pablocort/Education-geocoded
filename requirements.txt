@@ -4,5 +4,6 @@ pandas
 streamlit
 yfinance
 geopandas
-folium.plugins
+#HeatMap
+#FastMarkerCluster
 # Add other dependencies here
