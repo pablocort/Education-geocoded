@@ -4,5 +4,5 @@ pandas
 streamlit
 yfinance
 geopandas
-
+folium.plugins
 # Add other dependencies here
