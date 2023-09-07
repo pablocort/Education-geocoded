@@ -1,9 +1,7 @@
-geopandas
-folium
-pandas
-streamlit
-yfinance
-geopandas
+folium == 0.14.0
+streamlit_folium == 0.13.0
+pandas == 1.5.3
+streamlit == 1.25.0
 sys
 #HeatMap
 #FastMarkerCluster

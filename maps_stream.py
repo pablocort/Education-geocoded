@@ -3,6 +3,7 @@ import streamlit as st
 import pandas as pd
 import folium
 from folium.plugins import HeatMap, FastMarkerCluster
+from streamlit_folium import st_folium
 import sys
 st.write(sys.executable)
 
@@ -27,5 +28,5 @@ basemap=generateBaseMap()
 FastMarkerCluster(data=sedes_tic[['LATITUD', 'LONGITUD','Estudiantes por computador']].values.tolist()).add_to(basemap)
 basemap
 
-st.write(basemap)
+st_folium(basemap)
 
