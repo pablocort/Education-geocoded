@@ -2,9 +2,9 @@
 import streamlit as st
 
 st.write("""
-# Simple Stock Price App
+# Indicadores de de seguimiento a los retos transversales
 
-Shown are the stock closing price and volume of Google!
+Mapa de concetración de número de estudiantes por equipo de cómputo
 
 """)
 
