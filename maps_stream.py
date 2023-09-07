@@ -10,6 +10,7 @@ from folium.plugins import HeatMap
 
 
 
+
 ### import dataframes of interest
 sedes_tic = pd.read_csv(r'data\sedes_geo.csv', sep ='|')
 
