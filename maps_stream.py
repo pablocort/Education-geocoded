@@ -1,35 +1,21 @@
-import pandas as pd
+import yfinance as yf
 import streamlit as st
-print("Before import subprocess")
-import subprocess
-print("After import subprocess")
-subprocess.run(["pip", "install", "geopandas"])
-import geopandas as gpd
-import folium
-from folium.plugins import HeatMap
 
+st.write("""
+# Simple Stock Price App
 
+Shown are the stock closing price and volume of Google!
 
+""")
 
-### import dataframes of interest
-sedes_tic = pd.read_csv(r'data\sedes_geo.csv', sep ='|')
+# https://towardsdatascience.com/how-to-get-stock-data-using-python-c0de1df17e75
+#define the ticker symbol
+tickerSymbol = 'GOOGL'
+#get data on this ticker
+tickerData = yf.Ticker(tickerSymbol)
+#get the historical prices for this ticker
+tickerDf = tickerData.history(period='1d', start='2010-5-31', end='2020-5-31')
+# Open	High	Low	Close	Volume	Dividends	Stock Splits
 
-
-def generateBaseMap(default_location=[4.631530, -74.109180], default_zoom_start=11):
-    base_map = folium.Map(location=default_location, zoom_start=default_zoom_start)
-    return base_map
-basemap=generateBaseMap()
-
-from folium.plugins import FastMarkerCluster
-FastMarkerCluster(data=sedes_tic[['LATITUD', 'LONGITUD','Estudiantes por computador']].values.tolist()).add_to(basemap)
-basemap
-
-# Set the app title
-st.title("Retos de trayectoria")
-
-# Display the text
-st.write("Esta es una aplicación mediante la cual podremos visualizar nuestro indicadores de tranformación de manera transversal.")
-
-# Display the map
-st.write("Map of Schools")
-st.write(basemap)  # Assuming 'basemap' is your Folium map object
+st.line_chart(tickerDf.Close)
+st.line_chart(tickerDf.Volume)
