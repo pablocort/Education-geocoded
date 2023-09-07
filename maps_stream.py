@@ -4,8 +4,8 @@ import pandas as pd
 import folium
 from folium.plugins import HeatMap, FastMarkerCluster
 from streamlit_folium import st_folium
-import sys
-st.write(sys.executable)
+#import sys
+#st.write(sys.executable)
 
 st.write("""
 # Indicadores de de seguimiento a los retos transversales
