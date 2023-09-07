@@ -2,7 +2,7 @@ geopandas
 folium
 pandas
 streamlit
-subprocess
+yfinance
 geopandas
-os
+
 # Add other dependencies here
