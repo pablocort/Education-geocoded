@@ -37,15 +37,7 @@ basemap=generateBaseMap()
 #from folium.plugins import FastMarkerCluster
 FastMarkerCluster(data=sedes_tic[['LATITUD', 'LONGITUD','Estudiantes por computador']].values.tolist()).add_to(basemap)
 
-'''from IPython.core.display import display, HTML
+'''A continuación se presentan el promedio del número total de estudiantes por computador para cada región en Colombia'''
 
-def folium_deepnote_show(m):
-    data = m.get_root().render()
-    data_fixed_height = data.replace('width: 100%;height: 100%', 'width: 100%').replace('height: 100.0%;', 'height: 609px;', 1)
-    display(HTML(data_fixed_height))'''
-
-
-
-'''M = folium_deepnote_show(basemap)'''
 st_folium(basemap)
 
