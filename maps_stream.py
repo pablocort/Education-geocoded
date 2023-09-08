@@ -5,7 +5,7 @@ import folium
 from folium.plugins import HeatMap, FastMarkerCluster
 from streamlit_folium import st_folium
 import zipfile
-import csv
+
 
 #st.write(sys.executable)
 
@@ -15,9 +15,6 @@ st.write("""
 Mapa de concetración de número de estudiantes por equipo de cómputo
 
 """)
-
-sedes_tic = pd.read_csv('data/sedes_geo.csv', sep = '|')
-
 
 zip_file_path = 'data\sedes_geo.zip'
 # Open the compressed file in binary read mode ('rb')
