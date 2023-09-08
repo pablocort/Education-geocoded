@@ -29,6 +29,7 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
 
 
 
+
 def generateBaseMap(default_location=[4.631530, -74.109180], default_zoom_start=11):
     base_map = folium.Map(location=default_location, zoom_start=default_zoom_start)
     return base_map
