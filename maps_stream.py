@@ -27,9 +27,6 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
         sedes_tic = pd.read_csv(file, delimiter='|') 
 
 
-
-
-
 def generateBaseMap(default_location=[4.631530, -74.109180], default_zoom_start=11):
     base_map = folium.Map(location=default_location, zoom_start=default_zoom_start)
     return base_map
@@ -39,7 +36,7 @@ basemap=generateBaseMap()
 
 #from folium.plugins import FastMarkerCluster
 FastMarkerCluster(data=sedes_tic[['LATITUD', 'LONGITUD','Estudiantes por computador']].values.tolist()).add_to(basemap)
-
+import IPython
 from IPython.core.display import display, HTML
 
 def folium_deepnote_show(m):
