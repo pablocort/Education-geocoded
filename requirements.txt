@@ -3,6 +3,8 @@ streamlit_folium == 0.13.0
 pandas == 1.5.3
 streamlit == 1.25.0
 gzip == 3.8.16
+zipfile == 3.8.16
+
 #sys
 #HeatMap
 #FastMarkerCluster
