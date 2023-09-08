@@ -16,7 +16,7 @@ Mapa de concetración de número de estudiantes por equipo de cómputo
 
 """)
 
-zip_file_path = 'data\sedes_geo.zip'
+zip_file_path = 'data/sedes_geo.zip'
 # Open the compressed file in binary read mode ('rb')
 with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
     # Assuming the ZIP file contains a CSV file
