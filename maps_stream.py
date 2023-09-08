@@ -40,7 +40,6 @@ basemap=generateBaseMap()
 #from folium.plugins import FastMarkerCluster
 FastMarkerCluster(data=sedes_tic[['LATITUD', 'LONGITUD','Estudiantes por computador']].values.tolist()).add_to(basemap)
 
-import IPython
 from IPython.core.display import display, HTML
 
 def folium_deepnote_show(m):
