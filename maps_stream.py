@@ -10,7 +10,7 @@ import zipfile
 #st.write(sys.executable)
 
 st.write("""
-# Indicadores de de seguimiento a los retos transversales
+# Indicadores de seguimiento a los retos transversales
 
 Mapa de concetración de número de estudiantes por equipo de cómputo
 
