@@ -4,7 +4,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from unidecode import unidecode
-import os
+import zipfile
 
 
 
@@ -31,9 +31,9 @@ select_icfes_cols.extend(other_vars)
 icfes = icfes[select_icfes_cols]
 icfes.rename(columns={'estu_depto_reside':'Departamento',
                       'estu_mcpio_reside' : 'Municipio',
-                      'desemp_matematicas':'Nivel de desempeño en matemáticas', 
-                      'desemp_c_naturales':'Nivel de desempeño en ciencias naturales', 
-                      'desemp_lectura_critica':'Nivel de desempeño en lectura crítica'}, inplace= True)
+                      'desemp_matematicas':'Matemáticas', 
+                      'desemp_c_naturales':'Ciencias naturales', 
+                      'desemp_lectura_critica':'Lectura crítica'}, inplace= True)
 
 
 ### merge process
@@ -41,15 +41,18 @@ icfes = icfes.merge( geodata, on = 'sede_codigo',
                     how = 'left', indicator= 'merge_geo')
 icfes.merge_geo.value_counts()
 icfes = icfes[icfes['merge_geo'] == 'both']
-#icfes.to_csv(r'data\icfes_performance.csv', sep = '|')
+
+icfes.to_csv(r'data\icfes_performance.csv', sep = '|', index = False)
+with zipfile.ZipFile('data/icfes_performance.zip', 'w', zipfile.ZIP_DEFLATED) as zipf:
+    zipf.write('data/icfes_performance.csv', arcname='icfes_performance.csv')
 
 
 ######
 ######
 # Select the columns for the variables you want to analyze
-selected_columns = ['Nivel de desempeño en matemáticas', 
-                    'Nivel de desempeño en ciencias naturales', 
-                    'Nivel de desempeño en lectura crítica']
+selected_columns = ['Matemáticas', 
+                    'Ciencias naturales', 
+                    'Lectura crítica']
 
 custom_palette = [(0/255, 47/255, 135/255),  # RGB for the first color
                   (121/255, 163/255, 220/255),  # RGB for the second color
