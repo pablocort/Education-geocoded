@@ -1,23 +1,11 @@
 
 import streamlit as st
 import pandas as pd
-import folium
-from folium.plugins import HeatMap, FastMarkerCluster
-from streamlit_folium import st_folium
+import matplotlib.pyplot as plt
 import zipfile
 
-
-#st.write(sys.executable)
-
-st.write("""
-# Indicadores de seguimiento a los retos transversales
-
-Mapa de concetración de número de estudiantes por equipo de cómputo
-
-""")
-
 ## load data
-zip_file_path = 'data/sedes_geo.zip'
+zip_file_path = 'data/icfes_performance.zip'
 # Open the compressed file in binary read mode ('rb')
 with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
     # Assuming the ZIP file contains a CSV file
@@ -25,20 +13,49 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
 
     # Read the CSV file from the ZIP archive into a DataFrame
     with zip_file.open(csv_file_name) as file:
-        sedes_tic = pd.read_csv(file, delimiter='|') 
+        icfes = pd.read_csv(file, delimiter='|') 
  
 
-def generateBaseMap(default_location=[4.631530, -74.109180], default_zoom_start=11):
-    base_map = folium.Map(location=default_location, zoom_start=default_zoom_start)
-    return base_map
 
-basemap=generateBaseMap()
+# Create a select box for city selection
+selected_city = st.selectbox("Select a City", icfes['Municipio'].unique())
 
+st.write(f"Showing data for {selected_city}")
 
-#from folium.plugins import FastMarkerCluster
-FastMarkerCluster(data=sedes_tic[['LATITUD', 'LONGITUD','Estudiantes por computador']].values.tolist()).add_to(basemap)
+# Filter the DataFrame based on the selected city
+filtered_data = icfes[icfes['Municipio'] == selected_city]
 
-'''A continuación se presentan el promedio del número total de estudiantes por computador para cada región en Colombia'''
+# Select the columns for the variables you want to analyze
+selected_columns = ['Nivel de desempeño en matemáticas', 
+                    'Nivel de desempeño en ciencias naturales', 
+                    'Nivel de desempeño en lectura crítica']
 
-st_folium(basemap)
+# Calculate the mean count percentage for each level (1 to 4) for each variable
+mean_percentages = []
+for column in selected_columns:
+    percentages = filtered_data[column].value_counts(normalize=True) * 100
+    mean_percentages.append(percentages)
+
+# Create a DataFrame for the stacked bar plot
+mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
+mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]]
+
+# Create a stacked bar plot for mean percentages
+fig, ax = plt.subplots()
+mean_percentages_df.plot(kind='barh', stacked=True, figsize=(10, 6), ax=ax)
+
+# Customize the plot
+plt.title('')
+plt.xlabel('')
+plt.ylabel('Participación porcentual')
+
+# Add labels with one decimal place above each section
+for i, (idx, row) in enumerate(mean_percentages_df.iterrows()):
+    xpos = 0
+    for j, value in enumerate(row):
+        plt.text(xpos + value / 2, i, f'{value:.1f}%', ha='center', va='center')
+        xpos += value
+
+# Show the plot in Streamlit
+st.pyplot(fig)
 
