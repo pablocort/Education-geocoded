@@ -18,8 +18,7 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
         icfes = pd.read_csv(file, delimiter='|') 
  
 st.write("""
-# El siguiente tablero permite localizar aquellas instituciones que afrontan mayores
-# retos en cuanto al desempeño en pruebas Saber 11
+# El siguiente tablero permite localizar aquellas instituciones que afrontan mayores \nretos en cuanto al desempeño en pruebas Saber 11
 """)
 
 # Create a select box for city selection
@@ -92,8 +91,7 @@ filtered_data['longitud'] = pd.to_numeric(filtered_data['longitud'])
 filtered_data = filtered_data.dropna(subset=['latitud', 'longitud'])
 
 filtered_data_geo = filtered_data.groupby(['sede_codigo','longitud','latitud']).head(1)
-top_30_institutions_map = top_30_institutions.merge(filtered_data_geo,
-                                                    on = 'sede_codigo', how = 'inner', indicator = 'merge_geo2')
+top_30_institutions_map = top_30_institutions.merge(filtered_data_geo,on = 'sede_codigo', how = 'inner', indicator = 'merge_geo2')
 
 # Create a map centered on the selected city
 city_location = [filtered_data['latitud'].mean(), filtered_data['longitud'].mean()]
