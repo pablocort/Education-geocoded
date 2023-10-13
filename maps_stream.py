@@ -48,7 +48,9 @@ mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
 mean_percentages_df = mean_percentages_df[[1,2,3,4]]
 
 # Create a stacked bar plot for mean percentages
-ax = mean_percentages_df.plot(kind='barh', stacked=True, figsize=(10, 6),color=custom_palette)
+# Create a stacked bar plot for mean percentages
+fig, ax = plt.subplots()  # Create a Matplotlib figure and axis
+mean_percentages_df.plot(kind='barh', stacked=True, figsize=(10, 6), color=custom_palette, ax=ax)
 
 # Customize the plot
 plt.title('')
@@ -62,6 +64,6 @@ for i, (idx, row) in enumerate(mean_percentages_df.iterrows()):
         plt.text(xpos + value / 2, i, f'{value:.1f}%', ha='center', va='center')
         xpos += value
 
-# Show the plot
-plt.show()
+# Display the Matplotlib plot using Streamlit's st.pyplot
+st.pyplot(fig)
 
