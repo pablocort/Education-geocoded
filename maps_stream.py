@@ -18,12 +18,12 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
 
 
 # Create a select box for city selection
-selected_city = st.selectbox("Select a City", icfes['Municipio'].unique())
+selected_city = st.selectbox("Select a City", icfes['Departamento'].unique())
 
 st.write(f"Showing data for {selected_city}")
 
 # Filter the DataFrame based on the selected city
-filtered_data = icfes[icfes['Municipio'] == selected_city]
+filtered_data = icfes[icfes['Departamento'] == selected_city]
 
 ######
 ######
