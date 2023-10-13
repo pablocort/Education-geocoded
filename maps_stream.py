@@ -40,7 +40,7 @@ custom_palette = [(0/255, 47/255, 135/255),  # RGB for the first color
 # Calculate the mean count percentage for each level (1 to 4) for each variable
 mean_percentages = []
 for column in selected_columns:
-    percentages = icfes[column].value_counts(normalize=True) * 100
+    percentages = filtered_data[column].value_counts(normalize=True) * 100
     mean_percentages.append(percentages)
 
 # Create a DataFrame for the stacked bar plot
