@@ -110,4 +110,4 @@ for _, row in top_30_institutions_.iterrows():
 # Display the map in Streamlit
 
 st_folium(m)
-st.write(top_30_institutions)  
+st.write(top_30_institutions_)  
