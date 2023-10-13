@@ -46,11 +46,16 @@ icfes = icfes[icfes['merge_geo'] == 'both']
 
 
 ######
-########
+######
 # Select the columns for the variables you want to analyze
 selected_columns = ['Nivel de desempeño en matemáticas', 
                     'Nivel de desempeño en ciencias naturales', 
                     'Nivel de desempeño en lectura crítica']
+
+custom_palette = [(0/255, 47/255, 135/255),  # RGB for the first color
+                  (121/255, 163/255, 220/255),  # RGB for the second color
+                  (232/255, 114/255, 0/255),  # RGB for the third color
+                  (245/255, 179/255, 53/255)]  # RGB for the fourth color
 
 # Calculate the mean count percentage for each level (1 to 4) for each variable
 mean_percentages = []
@@ -63,7 +68,7 @@ mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
 mean_percentages_df = mean_percentages_df[[1,2,3,4]]
 
 # Create a stacked bar plot for mean percentages
-ax = mean_percentages_df.plot(kind='barh', stacked=True, figsize=(10, 6))
+ax = mean_percentages_df.plot(kind='barh', stacked=True, figsize=(10, 6),color=custom_palette)
 
 # Customize the plot
 plt.title('')
