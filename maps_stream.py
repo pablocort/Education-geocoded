@@ -19,8 +19,7 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
  
 st.write("""
 # El siguiente tablero permite localizar aquellas instituciones que afrontan mayores
-         retos en cuanto al desempeño en pruebas Saber 11
-
+# retos en cuanto al desempeño en pruebas Saber 11
 """)
 
 # Create a select box for city selection
@@ -85,14 +84,20 @@ st.bar_chart(top_30_institutions)
 
 
 
+# Ensure 'latitud' and 'longitud' are numeric and drop rows with missing values
+filtered_data['latitud'] = pd.to_numeric(filtered_data['latitud'], errors='coerce')
+filtered_data['longitud'] = pd.to_numeric(filtered_data['longitud'], errors='coerce')
+filtered_data = filtered_data.dropna(subset=['latitud', 'longitud'])
+
 # Create a map centered on the selected city
 city_location = [filtered_data['latitud'].mean(), filtered_data['longitud'].mean()]
 m = folium.Map(location=city_location, zoom_start=12)
 
 # Add markers for the top 30 institutions
-for institution_name, institution_data in top_30_institutions.items():
-    lat = institution_data['latitud']  # Assuming you have a 'latitud' column
-    lon = institution_data['longitud']  # Assuming you have a 'longitud' column
+for _, row in top_30_institutions.iterrows():
+    lat = row['latitud']  # Assuming you have a 'latitud' column
+    lon = row['longitud']  # Assuming you have a 'longitud' column
+    institution_name = row['Nombre de la institución']  # Assuming this is the institution name
     folium.Marker([lat, lon], popup=institution_name).add_to(m)
 
 # Display the map in Streamlit
