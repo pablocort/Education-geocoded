@@ -8,7 +8,6 @@ import os
 
 
 
-
 icfes = pd.read_csv(r'E:\portfolio_projects\Education_prediction\data\icfes\icfes_2022.csv',
              sep = '|')
 geodata = pd.read_csv(r'E:\portfolio_projects\Education_prediction\geo_schools.csv',
