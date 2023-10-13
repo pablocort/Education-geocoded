@@ -77,7 +77,6 @@ st.pyplot(fig)
 # Select the top 30 institutions with the highest participation in Level 1
 top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
 top_30_institutions = top_30_institutions['sede_codigo'].value_counts().head(30)
-top_30_institutions = top_30_institutions.reset_index()
 
 # Display the top 30 institutions with a bar plot
 st.bar_chart(top_30_institutions)
@@ -91,6 +90,9 @@ filtered_data['longitud'] = filtered_data['longitud'].str.replace(',', '.').asty
 filtered_data['latitud'] = pd.to_numeric(filtered_data['latitud'])
 filtered_data['longitud'] = pd.to_numeric(filtered_data['longitud'])
 filtered_data = filtered_data.dropna(subset=['latitud', 'longitud'])
+
+
+top_30_institutions = top_30_institutions.reset_index()
 
 # Create a map centered on the selected city
 city_location = [filtered_data['latitud'].mean(), filtered_data['longitud'].mean()]
