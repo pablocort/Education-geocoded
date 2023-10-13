@@ -4,6 +4,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
 import folium
+from streamlit_folium import st_folium
+
 
 
 ## load data
@@ -110,4 +112,5 @@ for _, row in top_30_institutions.iterrows():
     folium.Marker([lat, lon], popup=institution_name).add_to(m)
 
 # Display the map in Streamlit
-st.write(m)
+
+st_folium(m)
