@@ -95,10 +95,10 @@ filtered_data = filtered_data.dropna(subset=['latitud', 'longitud'])
 filtered_data = filtered_data.groupby(['sede_codigo','longitud','latitud']).head(1)
 top_30_institutions = top_30_institutions.reset_index().merge(filtered_data,on = 'sede_codigo', how = 'inner', indicator = 'merge_geo2')
 
-del(icfes)
+
 # Create a map centered on the selected city
 city_location = [filtered_data['latitud'].mean(), filtered_data['longitud'].mean()]
-m = folium.Map(location=city_location, zoom_start=8)
+m = folium.Map(location=city_location, zoom_start=10)
 
 
 # Add markers for the top 30 institutions
@@ -111,3 +111,4 @@ for _, row in top_30_institutions.iterrows():
 # Display the map in Streamlit
 
 st_folium(m)
+st.write(top_30_institutions)  
