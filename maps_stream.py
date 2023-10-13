@@ -83,10 +83,12 @@ st.bar_chart(top_30_institutions)
 
 
 
+filtered_data['latitud'] = filtered_data['latitud'].str.replace(',', '.').astype(float)
+filtered_data['longitud'] = filtered_data['longitud'].str.replace(',', '.').astype(float)
 
 # Ensure 'latitud' and 'longitud' are numeric and drop rows with missing values
-#filtered_data['latitud'] = pd.to_numeric(filtered_data['latitud'], errors='coerce')
-#filtered_data['longitud'] = pd.to_numeric(filtered_data['longitud'], errors='coerce')
+filtered_data['latitud'] = pd.to_numeric(filtered_data['latitud'])
+filtered_data['longitud'] = pd.to_numeric(filtered_data['longitud'])
 filtered_data = filtered_data.dropna(subset=['latitud', 'longitud'])
 
 # Create a map centered on the selected city
