@@ -100,9 +100,12 @@ m = folium.Map(location=city_location, zoom_start=12)
 
 
 # Add markers for the top 30 institutions
+a = []
 for _, row in top_30_institutions.iterrows():
     lat = row['latitud']  # Assuming you have a 'latitud' column
     lon = row['longitud']  # Assuming you have a 'longitud' column
+    a.append(lon)
+    a.append(lat)
     institution_name = row['sede_codigo']  # Assuming this is the institution name
     folium.Marker([lat, lon], popup=institution_name).add_to(m)
 
