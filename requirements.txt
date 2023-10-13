@@ -3,7 +3,7 @@ streamlit_folium == 0.13.0
 pandas == 1.5.3
 streamlit == 1.25.0
 IPython == 8.2.0
-matplotlib == 3.7.2
+matplotlib >= 3.4.0
 #sys
 #HeatMap
 #FastMarkerCluster
