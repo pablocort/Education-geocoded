@@ -77,6 +77,7 @@ st.pyplot(fig)
 # Select the top 30 institutions with the highest participation in Level 1
 top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
 top_30_institutions = top_30_institutions['sede_codigo'].value_counts().head(30)
+top_30_institutions = top_30_institutions.reset_index()
 
 # Display the top 30 institutions with a bar plot
 st.bar_chart(top_30_institutions)
@@ -95,11 +96,12 @@ filtered_data = filtered_data.dropna(subset=['latitud', 'longitud'])
 city_location = [filtered_data['latitud'].mean(), filtered_data['longitud'].mean()]
 m = folium.Map(location=city_location, zoom_start=12)
 
+
 # Add markers for the top 30 institutions
 for _, row in top_30_institutions.iterrows():
     lat = row['latitud']  # Assuming you have a 'latitud' column
     lon = row['longitud']  # Assuming you have a 'longitud' column
-    institution_name = row['Nombre de la institución']  # Assuming this is the institution name
+    institution_name = row['sede_codigo']  # Assuming this is the institution name
     folium.Marker([lat, lon], popup=institution_name).add_to(m)
 
 # Display the map in Streamlit
