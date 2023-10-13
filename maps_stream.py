@@ -92,13 +92,13 @@ filtered_data['latitud'] = pd.to_numeric(filtered_data['latitud'])
 filtered_data['longitud'] = pd.to_numeric(filtered_data['longitud'])
 filtered_data = filtered_data.dropna(subset=['latitud', 'longitud'])
 
-filtered_data_geo = filtered_data.groupby(['sede_codigo','longitud','latitud']).head(1)
-top_30_institutions = top_30_institutions.merge(filtered_data_geo,on = 'sede_codigo', how = 'inner', indicator = 'merge_geo2')
+filtered_data = filtered_data.groupby(['sede_codigo','longitud','latitud']).head(1)
+top_30_institutions = top_30_institutions.reset_index().merge(filtered_data,on = 'sede_codigo', how = 'inner', indicator = 'merge_geo2')
 
 
 # Create a map centered on the selected city
 city_location = [filtered_data['latitud'].mean(), filtered_data['longitud'].mean()]
-m = folium.Map(location=city_location, zoom_start=12)
+m = folium.Map(location=city_location, zoom_start=8)
 
 
 # Add markers for the top 30 institutions
