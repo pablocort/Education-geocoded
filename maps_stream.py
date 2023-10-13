@@ -50,7 +50,7 @@ mean_percentages_df = mean_percentages_df[[1,2,3,4]]
 # Create a stacked bar plot for mean percentages
 # Create a stacked bar plot for mean percentages
 fig, ax = plt.subplots()  # Create a Matplotlib figure and axis
-mean_percentages_df.plot(kind='barh', stacked=True, figsize=(10, 6), color=custom_palette, ax=ax)
+mean_percentages_df.plot(kind='barh', stacked=True, figsize=(12, 8), color=custom_palette, ax=ax)
 
 # Customize the plot
 plt.title('')
