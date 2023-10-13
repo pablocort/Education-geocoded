@@ -3,6 +3,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
+import folium
+
 
 ## load data
 zip_file_path = 'data/icfes_performance.zip'
@@ -15,7 +17,11 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
     with zip_file.open(csv_file_name) as file:
         icfes = pd.read_csv(file, delimiter='|') 
  
+st.write("""
+# El siguiente tablero permite localizar aquellas instituciones que afrontan mayores
+         retos en cuanto al desempeño en pruebas Saber 11
 
+""")
 
 # Create a select box for city selection
 selected_city = st.selectbox("Select a City", icfes['Departamento'].unique())
@@ -69,11 +75,25 @@ for i, (idx, row) in enumerate(mean_percentages_df.iterrows()):
 st.pyplot(fig)
 
 
-
-
 # Select the top 30 institutions with the highest participation in Level 1
 top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
 top_30_institutions = top_30_institutions['sede_codigo'].value_counts().head(30)
 
 # Display the top 30 institutions with a bar plot
 st.bar_chart(top_30_institutions)
+
+
+
+
+# Create a map centered on the selected city
+city_location = [filtered_data['latitud'].mean(), filtered_data['longitud'].mean()]
+m = folium.Map(location=city_location, zoom_start=12)
+
+# Add markers for the top 30 institutions
+for institution_name, institution_data in top_30_institutions.items():
+    lat = institution_data['latitud']  # Assuming you have a 'latitud' column
+    lon = institution_data['longitud']  # Assuming you have a 'longitud' column
+    folium.Marker([lat, lon], popup=institution_name).add_to(m)
+
+# Display the map in Streamlit
+st.write(m)
