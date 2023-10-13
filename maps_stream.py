@@ -28,9 +28,9 @@ filtered_data = icfes[icfes['Departamento'] == selected_city]
 ######
 ######
 # Select the columns for the variables you want to analyze
-selected_columns = ['Nivel de desempeño en matemáticas', 
-                    'Nivel de desempeño en ciencias naturales', 
-                    'Nivel de desempeño en lectura crítica']
+selected_columns = ['Matemáticas', 
+                    'Ciencias naturales', 
+                    'Lectura crítica']
 
 custom_palette = [(0/255, 47/255, 135/255),  # RGB for the first color
                   (121/255, 163/255, 220/255),  # RGB for the second color
