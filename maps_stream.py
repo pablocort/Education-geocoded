@@ -14,7 +14,12 @@ def load_data():
 def create_stacked_bar_plot(filtered_data, selected_columns):
     mean_percentages = [filtered_data[column].value_counts(normalize=True) * 100 for column in selected_columns]
     mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
-    mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]]
+
+    # Dynamically select columns based on the available columns in mean_percentages_df
+    available_columns = mean_percentages_df.columns
+    selected_columns = available_columns[:4]  # Select the first 4 columns, you can adjust this based on your requirements
+
+    mean_percentages_df = mean_percentages_df[selected_columns]
 
     fig, ax = plt.subplots()
     mean_percentages_df.plot(kind='barh', stacked=True, figsize=(12, 8), color=custom_palette, ax=ax)
