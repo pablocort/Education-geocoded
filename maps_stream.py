@@ -31,14 +31,21 @@ def create_stacked_bar_plot(filtered_data, selected_columns):
 
     st.pyplot(fig)
 
-def create_top_30_institutions_table(filtered_data):
+def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:"):
     top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
     top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')['punt_matematicas'].\
         median().reset_index().sort_values(by=['punt_matematicas'], ascending=True)
     top_30_institutions = top_30_institutions.head(30)
 
-    st.write("Top 30 Institutions with Highest Median Scores:")
-    st.table(top_30_institutions[['cole_nombre_establecimiento', 'punt_matematicas']])
+    # Custom column names
+    custom_column_names = {'cole_nombre_establecimiento': 'Institution Name', 'punt_matematicas': 'Mathematics Score'}
+
+    st.write(f'## {title}')
+    
+    # Rename columns
+    top_30_institutions.rename(columns=custom_column_names, inplace=True)
+    
+    st.table(top_30_institutions)
 
 
 # Load data
@@ -66,4 +73,5 @@ custom_palette = [(0/255, 47/255, 135/255), (121/255, 163/255, 220/255), (232/25
 create_stacked_bar_plot(filtered_data, selected_columns)
 
 # Create top 30 institutions chart
-create_top_30_institutions_table(filtered_data)
+create_top_30_institutions_table(filtered_data, 
+                                 title="Custom Title for Top 30 Institutions:")
