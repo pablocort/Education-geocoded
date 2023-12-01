@@ -57,12 +57,25 @@ st.write("""
 """)
 
 # Create a select box for city selection
-selected_city = st.selectbox("Select a City", icfes['Departamento'].unique())
-
+selected_city = st.selectbox("Seleccione un departamento", ['All'] + list(icfes['Departamento'].unique()))
 st.write(f"Showing data for {selected_city}")
 
-# Filter the DataFrame based on the selected city
-filtered_data = icfes[icfes['Departamento'] == selected_city]
+# Create a select box for municipio selection based on the selected departamento
+if selected_city != 'All':
+    municipios = ['All'] + list(icfes[icfes['Departamento'] == selected_city]['Municipio'].unique())
+    selected_municipio = st.selectbox('Seleccione un municipio', municipios)
+else:
+    selected_municipio = 'All'
+
+# Filter the DataFrame based on the selected departamento and municipio
+if selected_city == 'All':
+    filtered_data = icfes
+else:
+    if selected_municipio == 'All':
+        filtered_data = icfes[icfes['Departamento'] == selected_city]
+    else:
+        filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes['Municipio'] == selected_municipio)]
+
 
 
 # Select the columns for the variables you want to analyze
@@ -76,7 +89,7 @@ create_stacked_bar_plot(filtered_data, selected_columns)
 
 # Create top 30 institutions chart
 create_top_30_institutions_table(filtered_data, 
-                                 title="Custom Title for Top 30 Institutions:")
+                                 title="Top 30 de las instituciones con desempeños más bajos:")
 
 
 
