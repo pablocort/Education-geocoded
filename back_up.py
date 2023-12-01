@@ -211,23 +211,27 @@ def create_stacked_bar_plot(filtered_data, selected_columns):
 
 
 
-    def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:"):
-    top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
-    top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')['punt_matematicas'].\
-        median().reset_index().sort_values(by=['punt_matematicas'], ascending=True)
-    top_30_institutions = top_30_institutions.head(30)
+def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
+    # Calculate mean percentages
+    mean_percentages = [filtered_data[column].value_counts(normalize=True) * 100 for column in selected_columns]
+    mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
 
-    # Custom column names
-    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 'punt_matematicas': 'Puntaje mediano en matemáticas'}
+    # Reshape DataFrame for Plotly
+    mean_percentages_df = mean_percentages_df.T
 
-    st.write(f'## {title}')
-    
-    # Rename columns
-    top_30_institutions.rename(columns=custom_column_names, inplace=True)
-    
-    table_styles = [
-        dict(selector="th", props=[("font-size", "10pt")]),
-        dict(selector="td", props=[("font-size", "10pt")]),
-    ]
+    # Create an interactive stacked bar plot using Plotly graph_objects
+    fig = go.Figure()
 
-    st.table(top_30_institutions.set_index('Nombre de la institución'))
+    for i, column in enumerate(mean_percentages_df.columns):
+        fig.add_trace(go.Bar(x=mean_percentages_df.index, y=mean_percentages_df[column],
+                             name=str(column), marker_color=custom_palette[i]))
+
+    # Update layout for better visibility
+    fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
+                      title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
+                      legend_title_text='Performance Level', 
+                      legend=dict(title=dict(text='Performance Level')),
+                      width = 500)
+
+    # Display the plot
+    st.plotly_chart(fig)

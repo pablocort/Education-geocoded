@@ -17,25 +17,62 @@ def load_data():
 
 
 
-def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
-    # Group by the selected columns and calculate the mean percentages
-    grouped_data = filtered_data[selected_columns + ['punt_matematicas']].groupby(selected_columns + ['punt_matematicas']).size().reset_index(name='count')
-    grouped_data['percentage'] = grouped_data.groupby(selected_columns)['count'].transform(lambda x: x / x.sum() * 100)
+def create_stacked_bar_plot(data, custom_palette):
+    # Convert the custom_palette to the Plotly color format
+    custom_palette_plotly = [
+        f'rgb({int(color[0] * 255)},{int(color[1] * 255)},{int(color[2] * 255)})'
+        for color in custom_palette
+    ]
+    selected_columns = ['Matemáticas', 
+                    'Sociales',
+                    'Ciencias naturales', 
+                    'Lectura crítica']
+    mean_percentages = []
+    for column in selected_columns:
+        percentages = data[column].value_counts(normalize=True) * 100
+        mean_percentages.append(percentages)
 
-    # Create a stacked bar plot using Plotly graph_objects
+# Create a DataFrame for the stacked bar plot
+    mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
+    mean_percentages_df = mean_percentages_df[[1,2,3,4]]
+
+    # Transpose the DataFrame for horizontal bars
+    mean_percentages_df = mean_percentages_df.transpose()
+
+    # Create a horizontal stacked bar plot for mean percentages using Plotly
     fig = go.Figure()
 
-    for punt_value, color in zip(grouped_data['punt_matematicas'].unique(), custom_palette):
-        df = grouped_data[grouped_data['punt_matematicas'] == punt_value]
-        fig.add_trace(go.Bar(x=df[selected_columns], y=df['percentage'], name=str(punt_value), marker_color=color))
+    for column in mean_percentages_df.columns:
+        fig.add_trace(go.Bar(
+            x=mean_percentages_df.index,
+            y=mean_percentages_df[column],
+            text=[f'{value:.1f}%' for value in mean_percentages_df[column]],
+            hoverinfo='text',
+            name=f'Nivel {column}',
+            marker=dict(color=custom_palette_plotly[int(column)-1]),
+        ))
 
-    # Update layout for better visibility
-    fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
-                      title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
-                      legend_title_text='Performance Level', legend=dict(title=dict(text='Performance Level')))
+    # Customize the layout
+    fig.update_layout(
+        title='',
+        xaxis_title='Áreas temáticas',
+        yaxis_title='Participación porcentual',
+        barmode='stack',
+        showlegend=True,  # Set to True to show the legend
+    )
 
-    # Display the plot
-    st.plotly_chart(fig)
+    # Add legend titles for each Nivel
+    for index, color in zip(mean_percentages_df.columns, custom_palette_plotly):
+        fig.add_trace(go.Scatter(
+            x=[],
+            y=[],
+            mode='markers',
+            marker=dict(color=color),
+            name=f'Nivel {index}',
+            legendgroup=f'Nivel {index}',
+        ))
+
+    return fig
 
 
 
@@ -120,7 +157,7 @@ col1, col2 = st.columns(2)
 
 # In the first column, display the stacked bar plot
 with col1:
-    create_stacked_bar_plot(filtered_data, selected_columns, custom_palette)
+    fig = create_stacked_bar_plot(filtered_data, custom_palette)
 
 # Add an empty space between the two columns
 st.markdown("&nbsp;")

@@ -6,6 +6,8 @@ from matplotlib.ticker import PercentFormatter
 from unidecode import unidecode
 import zipfile
 import os
+import plotly.graph_objects as go  # Importing graph_objects from plotly
+import plotly as px
 
 os.getcwd()
 
@@ -97,7 +99,50 @@ plt.show()
 
 
 
+# Convert the custom_palette to the Plotly color format
+custom_palette_plotly = [
+    f'rgb({int(color[0] * 255)},{int(color[1] * 255)},{int(color[2] * 255)})'
+    for color in custom_palette
+]
 
+# Transpose the DataFrame for horizontal bars
+mean_percentages_df = mean_percentages_df.transpose()
+
+# Create a horizontal stacked bar plot for mean percentages using Plotly
+fig = go.Figure()
+
+for column in mean_percentages_df.columns:
+    fig.add_trace(go.Bar(
+        x=mean_percentages_df.index,
+        y=mean_percentages_df[column],
+        text=[f'{value:.1f}%' for value in mean_percentages_df[column]],
+        hoverinfo='text',
+        name=f'Nivel {column}',
+        marker=dict(color=custom_palette_plotly[int(column)-1]),
+    ))
+
+# Customize the layout
+fig.update_layout(
+    title='',
+    xaxis_title='Áreas temáticas',
+    yaxis_title='Participación porcentual',
+    barmode='stack',
+    showlegend=True,  # Set to True to show the legend
+)
+
+# Add legend titles for each Nivel
+for index, color in zip(mean_percentages_df.columns, custom_palette_plotly):
+    fig.add_trace(go.Scatter(
+        x=[],
+        y=[],
+        mode='markers',
+        marker=dict(color=color),
+        name=f'Nivel {index}',
+        legendgroup=f'Nivel {index}',
+    ))
+
+# Show the plot
+fig.show()
 
 
 
