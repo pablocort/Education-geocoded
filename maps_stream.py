@@ -14,12 +14,7 @@ def load_data():
 def create_stacked_bar_plot(filtered_data, selected_columns):
     mean_percentages = [filtered_data[column].value_counts(normalize=True) * 100 for column in selected_columns]
     mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
-
-    # Dynamically select columns based on the available columns in mean_percentages_df
-    available_columns = mean_percentages_df.columns
-    selected_columns = available_columns[:4]  # Select the first 4 columns, you can adjust this based on your requirements
-
-    mean_percentages_df = mean_percentages_df[selected_columns]
+    mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]]
 
     fig, ax = plt.subplots()
     mean_percentages_df.plot(kind='barh', stacked=True, figsize=(12, 8), color=custom_palette, ax=ax)
@@ -62,21 +57,13 @@ st.write("""
 """)
 
 # Create a select box for city selection
-selected_departamento = st.selectbox("Select a Departamento", ['All'] + list(icfes['Departamento'].unique()))
-st.write(f"Showing data for {selected_departamento}")
+selected_city = st.selectbox("Select a City", icfes['Departamento'].unique())
 
-# Create a select box for municipio selection based on the selected departamento
-if selected_departamento != 'All':
-    municipios = ['All'] + list(icfes[icfes['Departamento'] == selected_departamento]['Municipio'].unique())
-    selected_municipio = st.selectbox("Select a Municipio", municipios)
-else:
-    selected_municipio = 'All'
+st.write(f"Showing data for {selected_city}")
 
-# Filter the DataFrame based on the selected departamento and municipio
-if selected_municipio == 'All':
-    filtered_data = icfes[icfes['Departamento'] == selected_departamento]
-else:
-    filtered_data = icfes[(icfes['Departamento'] == selected_departamento) & (icfes['Municipio'] == selected_municipio)]
+# Filter the DataFrame based on the selected city
+filtered_data = icfes[icfes['Departamento'] == selected_city]
+
 
 # Select the columns for the variables you want to analyze
 selected_columns = ['Matemáticas', 'Sociales', 'Ciencias naturales', 'Lectura crítica']
