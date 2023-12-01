@@ -30,7 +30,7 @@ def create_stacked_bar_plot(data, custom_palette):
             text=[f'{value:.1f}%' for value in mean_percentages_df[column]],
             hoverinfo='text',
             name=f'Nivel {column}',
-            marker=dict(color=custom_palette_plotly[int(float(column)) - 1]),
+            marker=dict(color=custom_palette_plotly[int(float(column)) - 1])
         ))
 
     fig.update_layout(
