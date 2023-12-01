@@ -24,12 +24,14 @@ def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
     # Create a stacked bar plot using Plotly Express
     fig = px.bar(grouped_data, x=selected_columns, y='percentage', color='punt_matematicas',
                  title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
-                 labels={'percentage': 'Percentage'},
-                 color_continuous_scale=custom_palette)
+                 labels={'percentage': 'Percentage'})
+
+    # Specify the color scale
+    fig.update_traces(marker=dict(color=grouped_data['punt_matematicas'], colorscale=custom_palette), selector=dict(type='bar'))
 
     # Display the plot
     st.plotly_chart(fig)
-
+    
 def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:"):
     top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
     top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')['punt_matematicas'].\
