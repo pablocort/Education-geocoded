@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
-import altair as alt
 
 def load_data():
     zip_file_path = 'data/icfes_performance.zip'
