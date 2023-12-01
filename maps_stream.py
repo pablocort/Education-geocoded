@@ -3,6 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
 import plotly.graph_objects as go  # Importing graph_objects from plotly
+import plotly as px
 
 
 
@@ -16,26 +17,15 @@ def load_data():
 
 
 def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
-    # Calculate mean percentages
-    mean_percentages = [filtered_data[column].value_counts(normalize=True) * 100 for column in selected_columns]
-    mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
+    # Group by the selected columns and calculate the mean percentages
+    grouped_data = filtered_data[selected_columns + ['punt_matematicas']].groupby(selected_columns).size().reset_index(name='count')
+    grouped_data['percentage'] = grouped_data['count'] / grouped_data['count'].sum() * 100
 
-    # Reshape DataFrame for Plotly
-    mean_percentages_df = mean_percentages_df.T
-
-    # Create an interactive stacked bar plot using Plotly graph_objects
-    fig = go.Figure()
-
-    for i, column in enumerate(mean_percentages_df.columns):
-        fig.add_trace(go.Bar(x=mean_percentages_df.index, y=mean_percentages_df[column],
-                             name=str(column), marker_color=custom_palette[i]))
-
-    # Update layout for better visibility
-    fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
-                      title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
-                      legend_title_text='Performance Level', 
-                      legend=dict(title=dict(text='Performance Level')),
-                      width = 500)
+    # Create a stacked bar plot using Plotly Express
+    fig = px.bar(grouped_data, x=selected_columns, y='percentage', color='punt_matematicas',
+                 title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
+                 labels={'percentage': 'Percentage'},
+                 color_continuous_scale=custom_palette)
 
     # Display the plot
     st.plotly_chart(fig)
