@@ -89,6 +89,18 @@ custom_palette = [(0/255, 47/255, 135/255), (121/255, 163/255, 220/255), (232/25
 
 
 
+# Use custom CSS to widen the layout
+st.markdown(
+    """
+    <style>
+        .main {
+            max-width: 1200px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Create a layout with two columns
 col1, col2 = st.columns(2)
