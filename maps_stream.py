@@ -16,20 +16,28 @@ def load_data():
     return icfes
 
 
+
 def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
     # Group by the selected columns and calculate the mean percentages
     grouped_data = filtered_data[selected_columns + ['punt_matematicas']].groupby(selected_columns + ['punt_matematicas']).size().reset_index(name='count')
     grouped_data['percentage'] = grouped_data.groupby(selected_columns)['count'].transform(lambda x: x / x.sum() * 100)
 
-    # Create a basic bar chart using Plotly Express
-    fig = px.bar(grouped_data, x=selected_columns, y='percentage', color='punt_matematicas',
-                 title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
-                 labels={'percentage': 'Percentage'})
+    # Create a stacked bar plot using Plotly graph_objects
+    fig = go.Figure()
+
+    for punt_value in grouped_data['punt_matematicas'].unique():
+        df = grouped_data[grouped_data['punt_matematicas'] == punt_value]
+        fig.add_trace(go.Bar(x=df[selected_columns], y=df['percentage'], name=str(punt_value), marker_color=custom_palette[punt_value]))
+
+    # Update layout for better visibility
+    fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
+                      title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
+                      legend_title_text='Performance Level', legend=dict(title=dict(text='Performance Level')))
 
     # Display the plot
     st.plotly_chart(fig)
 
-    
+
 
 def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:"):
     top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
