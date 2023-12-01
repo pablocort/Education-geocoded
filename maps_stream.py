@@ -38,14 +38,14 @@ def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions w
     top_30_institutions = top_30_institutions.head(30)
 
     # Custom column names
-    custom_column_names = {'cole_nombre_establecimiento': 'Institution Name', 'punt_matematicas': 'Mathematics Score'}
+    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 'punt_matematicas': 'Puntaje mediano en matemáticas'}
 
     st.write(f'## {title}')
     
     # Rename columns
     top_30_institutions.rename(columns=custom_column_names, inplace=True)
     
-    st.table(top_30_institutions)
+    st.table(top_30_institutions.set_index('Nombre de la institución'))
 
 
 # Load data
@@ -75,3 +75,8 @@ create_stacked_bar_plot(filtered_data, selected_columns)
 # Create top 30 institutions chart
 create_top_30_institutions_table(filtered_data, 
                                  title="Custom Title for Top 30 Institutions:")
+
+
+
+
+
