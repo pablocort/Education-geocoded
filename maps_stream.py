@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
+import plotly as px
 
 def load_data():
     zip_file_path = 'data/icfes_performance.zip'
@@ -12,24 +13,25 @@ def load_data():
     return icfes
 
 def create_stacked_bar_plot(filtered_data, selected_columns):
+    # Calculate mean percentages
     mean_percentages = [filtered_data[column].value_counts(normalize=True) * 100 for column in selected_columns]
     mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
-    mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]]
 
-    fig, ax = plt.subplots()
-    mean_percentages_df.plot(kind='barh', stacked=True, figsize=(12, 8), color=custom_palette, ax=ax)
+    # Reshape DataFrame for Plotly
+    mean_percentages_df = mean_percentages_df.T
 
-    plt.title(f'Porcentaje de participación de los niveles de desempeño, según área temática y departamento - {selected_city}')
-    plt.xlabel('Participación porcentual de cada nivel de desempeño')
-    plt.ylabel('')
+    # Create an interactive stacked bar plot using Plotly Express
+    fig = px.bar(mean_percentages_df, barmode='stack', labels={'index': 'Sample Value', 'value': 'Percentage'},
+                 title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
+                 height=600, width=800)
+    
+    # Update layout for better visibility
+    fig.update_layout(xaxis_title='Sample Value', yaxis_title='Percentage',
+                      legend_title_text='Performance Level', legend=dict(title=dict(text='Performance Level')),
+                      margin=dict(l=0, r=0, b=0, t=50))
 
-    for i, (idx, row) in enumerate(mean_percentages_df.iterrows()):
-        xpos = 0
-        for j, value in enumerate(row):
-            plt.text(xpos + value / 2, i, f'{value:.1f}%', ha='center', va='center')
-            xpos += value
-
-    st.pyplot(fig)
+    # Display the plot
+    st.plotly_chart(fig)
 
 def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:"):
     top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
