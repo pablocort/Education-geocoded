@@ -20,7 +20,8 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
         icfes = pd.read_csv(file, delimiter='|') 
  
 st.write("""
-# El siguiente tablero permite localizar aquellas instituciones que afrontan mayores \nretos en cuanto al desempeño en pruebas Saber 11
+# El siguiente tablero permite localizar aquellas instituciones que afrontan mayores 
+         retos en cuanto al desempeño en pruebas Saber 11
 """)
 
 # Create a select box for city selection
