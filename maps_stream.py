@@ -51,6 +51,9 @@ def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions w
 # Load data
 icfes = load_data()
 
+# Set page configuration for wider margins
+st.set_page_config(layout="wide")
+
 # Streamlit app
 st.write("""
 # El siguiente tablero permite localizar aquellas instituciones que afrontan mayores retos en cuanto al desempeño en pruebas Saber 11
