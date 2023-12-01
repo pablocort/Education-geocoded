@@ -57,11 +57,21 @@ st.write("""
 """)
 
 # Create a select box for city selection
-selected_city = st.selectbox("Select a City", icfes['Departamento'].unique())
-st.write(f"Showing data for {selected_city}")
+selected_departamento = st.selectbox("Select a Departamento", ['All'] + list(icfes['Departamento'].unique()))
+st.write(f"Showing data for {selected_departamento}")
 
-# Filter the DataFrame based on the selected city
-filtered_data = icfes[icfes['Departamento'] == selected_city]
+# Create a select box for municipio selection based on the selected departamento
+if selected_departamento != 'All':
+    municipios = ['All'] + list(icfes[icfes['Departamento'] == selected_departamento]['Municipio'].unique())
+    selected_municipio = st.selectbox("Select a Municipio", municipios)
+else:
+    selected_municipio = 'All'
+
+# Filter the DataFrame based on the selected departamento and municipio
+if selected_municipio == 'All':
+    filtered_data = icfes[icfes['Departamento'] == selected_departamento]
+else:
+    filtered_data = icfes[(icfes['Departamento'] == selected_departamento) & (icfes['Municipio'] == selected_municipio)]
 
 # Select the columns for the variables you want to analyze
 selected_columns = ['Matemáticas', 'Sociales', 'Ciencias naturales', 'Lectura crítica']
