@@ -25,12 +25,9 @@ def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
     # Create a stacked bar plot using Plotly graph_objects
     fig = go.Figure()
 
-    color_scale = len(grouped_data['punt_matematicas'].unique())
-
-    for i, punt_value in enumerate(grouped_data['punt_matematicas'].unique()):
+    for punt_value, color in zip(grouped_data['punt_matematicas'].unique(), custom_palette):
         df = grouped_data[grouped_data['punt_matematicas'] == punt_value]
-        color_value = i % color_scale
-        fig.add_trace(go.Bar(x=df[selected_columns], y=df['percentage'], name=str(punt_value), marker_color=custom_palette[color_value]))
+        fig.add_trace(go.Bar(x=df[selected_columns], y=df['percentage'], name=str(punt_value), marker_color=color))
 
     # Update layout for better visibility
     fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
