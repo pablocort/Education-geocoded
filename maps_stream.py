@@ -33,7 +33,8 @@ def create_stacked_bar_plot(filtered_data, selected_columns):
 
 def create_top_30_institutions_table(filtered_data):
     top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
-    top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')['punt_matematicas'].median().reset_index().sort_values(by=['punt_matematicas'], ascending=False)
+    top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')['punt_matematicas'].\
+        median().reset_index().sort_values(by=['punt_matematicas'], ascending=True)
     top_30_institutions = top_30_institutions.head(30)
 
     st.write("Top 30 Institutions with Highest Median Scores:")
