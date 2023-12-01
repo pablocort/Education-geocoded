@@ -85,8 +85,12 @@ top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')
 top_30_institutions = top_30_institutions.head(30)
 
 # Display the top 30 institutions with a bar plot
-st.bar_chart(top_30_institutions.set_index('cole_nombre_establecimiento'))
+chart = alt.Chart(top_30_institutions).mark_bar().encode(
+    x='cole_nombre_establecimiento',
+    y='punt_matematicas'
+)
 
+st.altair_chart(chart, use_container_width=True)
 
 
 filtered_data['latitud'] = filtered_data['latitud'].str.replace(',', '.').astype(float)
