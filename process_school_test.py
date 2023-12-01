@@ -5,8 +5,9 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import PercentFormatter
 from unidecode import unidecode
 import zipfile
+import os
 
-
+os.getcwd()
 
 icfes = pd.read_csv(r'E:\portfolio_projects\Education_prediction\data\icfes\icfes_2022.csv',
              sep = '|')
@@ -32,6 +33,7 @@ icfes = icfes[select_icfes_cols]
 icfes.rename(columns={'estu_depto_reside':'Departamento',
                       'estu_mcpio_reside' : 'Municipio',
                       'desemp_matematicas':'Matemáticas', 
+                      'desemp_sociales_ciudadanas' : 'Sociales',
                       'desemp_c_naturales':'Ciencias naturales', 
                       'desemp_lectura_critica':'Lectura crítica'}, inplace= True)
 
@@ -51,6 +53,7 @@ with zipfile.ZipFile('data/icfes_performance.zip', 'w', zipfile.ZIP_DEFLATED) as
 ######
 # Select the columns for the variables you want to analyze
 selected_columns = ['Matemáticas', 
+                    'Sociales',
                     'Ciencias naturales', 
                     'Lectura crítica']
 
