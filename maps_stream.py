@@ -33,8 +33,7 @@ def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
     # Update layout for better visibility
     fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
                       title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
-                      legend_title_text='Performance Level', legend=dict(title=dict(text='Performance Level')),
-                      margin=dict(l=0, r=0, b=0, t=50))
+                      legend_title_text='Performance Level', legend=dict(title=dict(text='Performance Level')))
 
     # Display the plot
     st.plotly_chart(fig)
@@ -115,11 +114,13 @@ col1, col2 = st.columns(2)
 
 # In the first column, display the stacked bar plot
 with col1:
-    create_stacked_bar_plot(filtered_data, selected_columns)
+    create_stacked_bar_plot(filtered_data, selected_columns, custom_palette)
+
+# Add an empty space between the two columns
+st.markdown("&nbsp;")
 
 # In the second column, display the top 30 institutions table
 with col2:
     create_top_30_institutions_table(filtered_data, title="Custom Title for Top 30 Institutions:")
-
 
 
