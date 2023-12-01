@@ -84,14 +84,19 @@ selected_columns = ['Matemáticas', 'Sociales', 'Ciencias naturales', 'Lectura c
 # Custom color palette
 custom_palette = [(0/255, 47/255, 135/255), (121/255, 163/255, 220/255), (232/255, 114/255, 0/255), (245/255, 179/255, 53/255)]
 
-# Create stacked bar plot
-create_stacked_bar_plot(filtered_data, selected_columns)
-
-# Create top 30 institutions chart
-create_top_30_institutions_table(filtered_data, 
-                                 title="Top 30 de las instituciones con desempeños más bajos:")
 
 
+
+# Create a layout with two columns
+col1, col2 = st.columns(2)
+
+# In the first column, display the stacked bar plot
+with col1:
+    create_stacked_bar_plot(filtered_data, selected_columns)
+
+# In the second column, display the top 30 institutions table
+with col2:
+    create_top_30_institutions_table(filtered_data, title="Custom Title for Top 30 Institutions:")
 
 
 
