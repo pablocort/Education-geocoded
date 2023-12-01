@@ -183,3 +183,27 @@ for _, row in top_30_institutions_.iterrows():
 
 st_folium(m)
 st.write(top_30_institutions_)  
+
+
+
+
+
+def create_stacked_bar_plot(filtered_data, selected_columns):
+    mean_percentages = [filtered_data[column].value_counts(normalize=True) * 100 for column in selected_columns]
+    mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
+    mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]]
+
+    fig, ax = plt.subplots()
+    mean_percentages_df.plot(kind='barh', stacked=True, figsize=(12, 8), color=custom_palette, ax=ax)
+
+    plt.title(f'Porcentaje de participación de los niveles de desempeño, según área temática y departamento - {selected_city}')
+    plt.xlabel('Participación porcentual de cada nivel de desempeño')
+    plt.ylabel('')
+
+    for i, (idx, row) in enumerate(mean_percentages_df.iterrows()):
+        xpos = 0
+        for j, value in enumerate(row):
+            plt.text(xpos + value / 2, i, f'{value:.1f}%', ha='center', va='center')
+            xpos += value
+
+    st.pyplot(fig)
