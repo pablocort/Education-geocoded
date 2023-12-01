@@ -2,7 +2,9 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
-import plotly as px
+import plotly.graph_objects as go  # Importing graph_objects from plotly
+
+
 
 def load_data():
     zip_file_path = 'data/icfes_performance.zip'
@@ -20,13 +22,15 @@ def create_stacked_bar_plot(filtered_data, selected_columns):
     # Reshape DataFrame for Plotly
     mean_percentages_df = mean_percentages_df.T
 
-    # Create an interactive stacked bar plot using Plotly Express
-    fig = px.bar(mean_percentages_df, barmode='stack', labels={'index': 'Sample Value', 'value': 'Percentage'},
-                 title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
-                 height=600, width=800)
-    
+    # Create an interactive stacked bar plot using Plotly graph_objects
+    fig = go.Figure()
+
+    for column in mean_percentages_df.columns:
+        fig.add_trace(go.Bar(x=mean_percentages_df.index, y=mean_percentages_df[column], name=str(column)))
+
     # Update layout for better visibility
-    fig.update_layout(xaxis_title='Sample Value', yaxis_title='Percentage',
+    fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
+                      title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
                       legend_title_text='Performance Level', legend=dict(title=dict(text='Performance Level')),
                       margin=dict(l=0, r=0, b=0, t=50))
 
