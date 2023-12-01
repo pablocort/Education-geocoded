@@ -85,7 +85,7 @@ top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')
 top_30_institutions = top_30_institutions.head(30)
 
 # Display the top 30 institutions with a bar plot
-st.bar_chart(top_30_institutions)
+st.bar_chart(top_30_institutions.set_index('cole_nombre_establecimiento'))
 
 
 
