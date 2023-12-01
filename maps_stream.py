@@ -33,7 +33,9 @@ def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
     # Update layout for better visibility
     fig.update_layout(barmode='stack', xaxis_title='Sample Value', yaxis_title='Percentage',
                       title=f'Porcentaje de participación de los niveles de desempeño - {filtered_data.iloc[0]["Departamento"]}',
-                      legend_title_text='Performance Level', legend=dict(title=dict(text='Performance Level')))
+                      legend_title_text='Performance Level', 
+                      legend=dict(title=dict(text='Performance Level')),
+                      width = 500)
 
     # Display the plot
     st.plotly_chart(fig)
@@ -52,6 +54,11 @@ def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions w
     # Rename columns
     top_30_institutions.rename(columns=custom_column_names, inplace=True)
     
+    table_styles = [
+        dict(selector="th", props=[("font-size", "10pt")]),
+        dict(selector="td", props=[("font-size", "10pt")]),
+    ]
+
     st.table(top_30_institutions.set_index('Nombre de la institución'))
 
 
