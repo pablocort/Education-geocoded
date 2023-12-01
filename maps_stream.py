@@ -18,8 +18,8 @@ def load_data():
 
 def create_stacked_bar_plot(filtered_data, selected_columns, custom_palette):
     # Group by the selected columns and calculate the mean percentages
-    grouped_data = filtered_data[selected_columns + ['punt_matematicas']].groupby(selected_columns).size().reset_index(name='count')
-    grouped_data['percentage'] = grouped_data['count'] / grouped_data['count'].sum() * 100
+    grouped_data = filtered_data[selected_columns + ['punt_matematicas']].groupby(selected_columns + ['punt_matematicas']).size().reset_index(name='count')
+    grouped_data['percentage'] = grouped_data.groupby(selected_columns)['count'].transform(lambda x: x / x.sum() * 100)
 
     # Create a stacked bar plot using Plotly Express
     fig = px.bar(grouped_data, x=selected_columns, y='percentage', color='punt_matematicas',
