@@ -24,10 +24,14 @@ geodata.rename(columns={'cod_dane':'sede_codigo'}, inplace=True)
 
 ### icfes cleaning
 ## select certain variables from icfes test
-select_icfes_cols = [var for var in icfes.columns if 'desemp' in var or\
+
+select_icfes_cols = [var for var in icfes.columns if 'desemp' in var or 'punt_' in var or\
                      'sede_codigo' in var or 'depto' in var or 'mcpio' in var]
 
-other_vars = ['estu_tieneetnia', 'estu_depto_reside' ,'estu_mcpio_reside',"estu_genero"]
+other_vars = ['estu_tieneetnia', 'estu_depto_reside' ,'estu_mcpio_reside',"estu_genero",
+              'cole_nombre_establecimiento','fami_numlibros',
+              'fami_tieneinternet', 'fami_tienecomputador',
+              'estu_dedicacionlecturadiaria', 'estu_dedicacioninternet']
 select_icfes_cols.extend(other_vars)
 icfes = icfes[select_icfes_cols]
 icfes.rename(columns={'estu_depto_reside':'Departamento',

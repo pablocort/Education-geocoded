@@ -76,9 +76,13 @@ for i, (idx, row) in enumerate(mean_percentages_df.iterrows()):
 st.pyplot(fig)
 
 
+
+
 # Select the top 30 institutions with the highest participation in Level 1
 top_30_institutions = filtered_data[filtered_data['Matemáticas'] == 1]
-top_30_institutions = top_30_institutions['sede_codigo'].value_counts().head(30)
+top_30_institutions = top_30_institutions.groupby('cole_nombre_establecimiento')['punt_matematicas'].median().reset_index().sort_values(by=['punt_matematicas'])
+
+top_30_institutions = top_30_institutions.head(30)
 
 # Display the top 30 institutions with a bar plot
 st.bar_chart(top_30_institutions)
