@@ -54,7 +54,14 @@ areas = {"punt_matematicas": 'Matemáticas',
 
 
 def create_top_30_institutions_table(filtered_data, selected_subject, title="Top 30 de instituciones con desempeños más bajos:"):
-    subject_column = areas[selected_subject]
+    try:
+        subject_column = areas[selected_subject]
+        if subject_column not in filtered_data.columns:
+            st.warning(f"The selected subject column '{subject_column}' does not exist in the DataFrame.")
+            return
+    except KeyError:
+        st.warning(f"The selected subject '{selected_subject}' is not recognized.")
+        return
 
     top_30_institutions = (
         filtered_data[filtered_data[subject_column] == 1]
