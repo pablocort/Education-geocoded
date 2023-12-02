@@ -46,7 +46,7 @@ def create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected
 
     return fig
 
-def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:"):
+def create_top_30_institutions_table(filtered_data, title="Top 30 de instituciones con desempeños más bajos:"):
     top_30_institutions = (
         filtered_data[filtered_data['Matemáticas'] == 1]
         .groupby('cole_nombre_establecimiento')['punt_matematicas']
@@ -138,13 +138,14 @@ st.markdown("&nbsp;")
 # Create the top 30 institutions table
 create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:")
 
-# Apply custom style to the table to make it less wide
-table_styles = [
-    dict(selector="th", props=[("font-size", "10pt")]),
-    dict(selector="td", props=[("font-size", "10pt")]),
-    dict(selector=".css-9i1zmu", props=[("max-width", "300px")])  # Adjust the max-width as needed
-]
 
-st.table(top_30_institutions.set_index('Nombre de la institución')).set_style(table_styles)
+# Apply custom style to the table to make it less wide
+#table_styles = [
+#    dict(selector="th", props=[("font-size", "10pt")]),
+#    dict(selector="td", props=[("font-size", "10pt")]),
+#    dict(selector=".css-9i1zmu", props=[("max-width", "300px")])  # Adjust the max-width as needed
+#]
+
+#st.table(top_30_institutions.set_index('Nombre de la institución')).set_style(table_styles)
 
 
