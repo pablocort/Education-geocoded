@@ -53,7 +53,9 @@ areas = {"punt_matematicas": 'Matemáticas',
        'punt_sociales_ciudadanas': 'Sociales'}
 
 
-def create_top_30_institutions_table(filtered_data, title="Top 30 de instituciones con desempeños más bajos:"):
+def create_top_30_institutions_table(filtered_data, 
+                                     selected_subject,
+                                     title="Top 30 de instituciones con desempeños más bajos:"):
     if selected_subject == 'Matemáticas':
         Puntaje_selected = 'punt_matematicas'
     elif selected_subject == 'Ciencias naturales':
@@ -161,7 +163,7 @@ selected_subject = st.selectbox("Seleccione un área", list(areas.unique()))
 #st.write(f"Showing data for {areas[selected_subject]}")
 
 # Call the function with the selected subject
-create_top_30_institutions_table(filtered_data)
+create_top_30_institutions_table(filtered_data, selected_subject)
 
 
 # Apply custom style to the table to make it less wide
