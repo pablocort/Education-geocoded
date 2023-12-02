@@ -155,11 +155,10 @@ areas = [
     'Matemáticas',
     'Ciencias naturales', 
     'Lectura crítica',
-    'Sociales'
-]
+    'Sociales']
 
 
-selected_subject = st.selectbox("Seleccione un área", list(areas.unique()))
+selected_subject = st.selectbox("Seleccione un área", areas)
 #st.write(f"Showing data for {areas[selected_subject]}")
 
 # Call the function with the selected subject
