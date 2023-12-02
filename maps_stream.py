@@ -58,32 +58,39 @@ def create_top_30_institutions_table(filtered_data, selected_subject, title="Top
         subject_column = areas[selected_subject]
         if subject_column not in filtered_data.columns:
             st.warning(f"The selected subject column '{subject_column}' does not exist in the DataFrame.")
+            st.warning(f"Available columns: {', '.join(filtered_data.columns)}")
             return
     except KeyError:
         st.warning(f"The selected subject '{selected_subject}' is not recognized.")
+        st.warning(f"Available subjects: {', '.join(areas.keys())}")
         return
 
-    top_30_institutions = (
-        filtered_data[filtered_data[subject_column] == 1]
-        .groupby('cole_nombre_establecimiento')[f'punt_{selected_subject}']
-        .median()
-        .reset_index()
-        .sort_values(by=[f'punt_{selected_subject}'], ascending=True)
-        .head(30)
-    )
+    try:
+        top_30_institutions = (
+            filtered_data[filtered_data[subject_column] == 1]
+            .groupby('cole_nombre_establecimiento')[f'punt_{selected_subject}']
+            .median()
+            .reset_index()
+            .sort_values(by=[f'punt_{selected_subject}'], ascending=True)
+            .head(30)
+        )
 
-    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', f'punt_{selected_subject}': f'Puntaje mediano en {areas[selected_subject]}'}
-    
-    st.write(f'## {title}')
-    
-    top_30_institutions.rename(columns=custom_column_names, inplace=True)
-    
-    table_styles = [
-        dict(selector="th", props=[("font-size", "10pt")]),
-        dict(selector="td", props=[("font-size", "10pt")]),
-    ]
+        custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', f'punt_{selected_subject}': f'Puntaje mediano en {areas[selected_subject]}'}
 
-    st.table(top_30_institutions.set_index('Nombre de la institución')).set_style(table_styles)
+        st.write(f'## {title}')
+
+        top_30_institutions.rename(columns=custom_column_names, inplace=True)
+
+        table_styles = [
+            dict(selector="th", props=[("font-size", "10pt")]),
+            dict(selector="td", props=[("font-size", "10pt")]),
+        ]
+
+        st.table(top_30_institutions.set_index('Nombre de la institución')).set_style(table_styles)
+    except KeyError as e:
+        st.warning(f"Error processing the data: {e}")
+
+# ... (Rest of the code remains unchanged)
 
 # Define the areas dictionary
 areas = {
