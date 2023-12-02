@@ -53,17 +53,19 @@ areas = {"punt_matematicas": 'Matemáticas',
        'punt_sociales_ciudadanas': 'Sociales'}
 
 
-def create_top_30_institutions_table(filtered_data, title="Top 30 de instituciones con desempeños más bajos:"):
+def create_top_30_institutions_table(filtered_data, selected_subject, title="Top 30 de instituciones con desempeños más bajos:"):
+    subject_column = areas[selected_subject]
+
     top_30_institutions = (
-        filtered_data[filtered_data['Matemáticas'] == 1]
-        .groupby('cole_nombre_establecimiento')['punt_matematicas']
+        filtered_data[filtered_data[subject_column] == 1]
+        .groupby('cole_nombre_establecimiento')[f'punt_{selected_subject}']
         .median()
         .reset_index()
-        .sort_values(by=['punt_matematicas'], ascending=True)
+        .sort_values(by=[f'punt_{selected_subject}'], ascending=True)
         .head(30)
     )
 
-    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 'punt_matematicas': 'Puntaje mediano en matemáticas'}
+    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', f'punt_{selected_subject}': f'Puntaje mediano en {areas[selected_subject]}'}
     
     st.write(f'## {title}')
     
@@ -74,7 +76,16 @@ def create_top_30_institutions_table(filtered_data, title="Top 30 de institucion
         dict(selector="td", props=[("font-size", "10pt")]),
     ]
 
-    st.table(top_30_institutions.set_index('Nombre de la institución'))
+    st.table(top_30_institutions.set_index('Nombre de la institución')).set_style(table_styles)
+
+# Define the areas dictionary
+areas = {
+    "punt_matematicas": 'Matemáticas',
+    'punt_ingles': 'Desempeño en inglés', 
+    'punt_c_naturales': 'Ciencias naturales', 
+    'punt_lectura_critica': 'Lectura crítica',
+    'punt_sociales_ciudadanas': 'Sociales'
+}
 
 
 
@@ -142,9 +153,11 @@ st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, sel
 # Add an empty space between the two sections
 st.markdown("&nbsp;")
 
+# Create a select box for choosing the subject
+selected_subject = st.selectbox("Seleccione el área temática", list(areas.keys()))
+
 # Create the top 30 institutions table
-create_top_30_institutions_table(filtered_data, 
-                                 title= "Top 30 de instituciones con desempeños más bajos:")
+create_top_30_institutions_table(filtered_data, selected_subject)
 
 
 # Apply custom style to the table to make it less wide
