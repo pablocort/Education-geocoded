@@ -56,7 +56,8 @@ areas = {"punt_matematicas": 'Matemáticas',
 
 def create_top_30_institutions_table(filtered_data, 
                                      selected_subject,
-                                     title="Top 30 de instituciones con desempeños más bajos:"):
+                                     x,
+                                     title="Top de instituciones con desempeños más bajos:"):
     if selected_subject == 'Matemáticas':
         Puntaje_selected = 'punt_matematicas'
     elif selected_subject == 'Ciencias naturales':
@@ -72,9 +73,9 @@ def create_top_30_institutions_table(filtered_data,
         .median()
         .reset_index()
         .sort_values(by=[Puntaje_selected], ascending=True)
-        .head(30)
+        .head(x)
     )
-    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 'punt_matematicas': 'Puntaje mediano en matemáticas'}
+    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 'punt_matematicas': f'Puntaje mediano en {selected_subject}'}
     
     st.write(f'## {title}')
     
