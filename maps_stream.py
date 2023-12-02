@@ -15,7 +15,7 @@ from functions_viz import create_top_30_institutions_table
 icfes = load_data()
 
 # Set page configuration for wider margins
-st.set_page_config(layout="wide")
+#st.set_page_config(layout="wide")
 
 # Streamlit app
 st.write("""
