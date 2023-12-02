@@ -69,6 +69,11 @@ def create_top_30_institutions_table(filtered_data, title="Top 30 Institutions w
 
     st.table(top_30_institutions.set_index('Nombre de la institución'))
 
+
+
+
+
+
 # Load data
 icfes = load_data()
 
@@ -92,6 +97,7 @@ else:
     selected_municipio = 'All'
 
 # Filter the DataFrame based on the selected departamento and municipio
+# Filter the DataFrame based on the selected departamento and municipio
 if selected_city == 'All':
     filtered_data = icfes
 else:
@@ -106,25 +112,13 @@ selected_columns = ['Matemáticas', 'Sociales', 'Ciencias naturales', 'Lectura c
 # Custom color palette
 custom_palette = [(0/255, 47/255, 135/255), (121/255, 163/255, 220/255), (232/255, 114/255, 0/255), (245/255, 179/255, 53/255)]
 
-# Use custom CSS to widen the layout
-st.markdown(
-    """
-    <style>
-        .main {
-            max-width: 1200px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-# Calculate the mean count percentage for each level (1 to 4) for each variable
+# Calculate the mean count percentage for each level (1 to 4) for each variable using filtered_data
 mean_percentages = []
 for column in selected_columns:
     percentages = filtered_data[column].value_counts(normalize=True) * 100
     mean_percentages.append(percentages)
 
-# Create a DataFrame for the stacked bar plot
+# Create a DataFrame for the stacked bar plot using filtered_data
 mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
 mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]]
 
@@ -137,8 +131,25 @@ custom_palette_plotly = [
 # Transpose the DataFrame for horizontal bars
 mean_percentages_df = mean_percentages_df.transpose()
 
-
+# Create the stacked bar plot
 st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
+
+
+
+# Use custom CSS to widen the layout
+st.markdown(
+    """
+    <style>
+        .main {
+            max-width: 1200px;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
 
 # Create a layout with two columns
 col1, col2 = st.columns(2)
