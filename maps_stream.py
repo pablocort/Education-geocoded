@@ -136,7 +136,8 @@ st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, sel
 st.markdown("&nbsp;")
 
 # Create the top 30 institutions table
-create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:")
+create_top_30_institutions_table(filtered_data, 
+                                 title= "Top 30 de instituciones con desempeños más bajos:")
 
 
 # Apply custom style to the table to make it less wide
