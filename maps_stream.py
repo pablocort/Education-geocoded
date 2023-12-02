@@ -54,15 +54,23 @@ areas = {"punt_matematicas": 'Matemáticas',
 
 
 def create_top_30_institutions_table(filtered_data, title="Top 30 de instituciones con desempeños más bajos:"):
+    if selected_subject == 'Matemáticas':
+        Puntaje_selected = 'punt_matematicas'
+    elif selected_subject == 'Ciencias naturales':
+        Puntaje_selected = 'punt_c_naturales'
+    elif selected_subject == 'Lectura crítica':
+        Puntaje_selected = 'punt_lectura_critica'
+    elif selected_subject == 'Sociales':
+        Puntaje_selected = 'punt_sociales_ciudadanas'
+        
     top_30_institutions = (
-        filtered_data[filtered_data['Matemáticas'] == 1]
-        .groupby('cole_nombre_establecimiento')['punt_matematicas']
+        filtered_data[filtered_data[selected_subject] == 1]
+        .groupby('cole_nombre_establecimiento')[Puntaje_selected]
         .median()
         .reset_index()
-        .sort_values(by=['punt_matematicas'], ascending=True)
+        .sort_values(by=[Puntaje_selected], ascending=True)
         .head(30)
     )
-
     custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 'punt_matematicas': 'Puntaje mediano en matemáticas'}
     
     st.write(f'## {title}')
@@ -75,20 +83,6 @@ def create_top_30_institutions_table(filtered_data, title="Top 30 de institucion
     ]
 
     st.table(top_30_institutions.set_index('Nombre de la institución'))
-
-# ... (Rest of the code remains unchanged)
-
-# Define the areas dictionary
-areas = {
-    "punt_matematicas": 'Matemáticas',
-    'punt_ingles': 'Desempeño en inglés', 
-    'punt_c_naturales': 'Ciencias naturales', 
-    'punt_lectura_critica': 'Lectura crítica',
-    'punt_sociales_ciudadanas': 'Sociales'
-}
-
-
-
 
 
 
@@ -131,7 +125,7 @@ custom_palette = [(0/255, 47/255, 135/255), (121/255, 163/255, 220/255), (232/25
 # Calculate the mean count percentage for each level (1 to 4) for each variable using filtered_data
 mean_percentages = []
 for column in selected_columns:
-    percentages = filtered_data[column].value_counts(normalize=True) * 100
+    percentages = filtered_data[column].value_counts(normalize=True)*100
     mean_percentages.append(percentages)
 
 # Create a DataFrame for the stacked bar plot using filtered_data
@@ -153,7 +147,17 @@ st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, sel
 # Add an empty space between the two sections
 st.markdown("&nbsp;")
 
-selected_subject = st.selectbox("Seleccione un área", list(areas.values()))
+st.write(f"Showing data for {selected_city}")
+
+areas = [
+    'Matemáticas',
+    'Ciencias naturales', 
+    'Lectura crítica',
+    'Sociales'
+]
+
+
+selected_subject = st.selectbox("Seleccione un área", list(areas.unique()))
 #st.write(f"Showing data for {areas[selected_subject]}")
 
 # Call the function with the selected subject
