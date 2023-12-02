@@ -84,7 +84,6 @@ st.set_page_config(layout="wide")
 st.write("""
 # El siguiente tablero permite localizar aquellas instituciones que afrontan mayores retos en cuanto al desempeño en pruebas Saber 11
 """)
-
 # Create a select box for city selection
 selected_city = st.selectbox("Seleccione un departamento", ['All'] + list(icfes['Departamento'].unique()))
 st.write(f"Showing data for {selected_city}")
@@ -96,7 +95,6 @@ if selected_city != 'All':
 else:
     selected_municipio = 'All'
 
-# Filter the DataFrame based on the selected departamento and municipio
 # Filter the DataFrame based on the selected departamento and municipio
 if selected_city == 'All':
     filtered_data = icfes
@@ -133,6 +131,12 @@ mean_percentages_df = mean_percentages_df.transpose()
 
 # Create the stacked bar plot
 st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
+
+# Add an empty space between the two sections
+st.markdown("&nbsp;")
+
+# Create the top 30 institutions table
+create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:")
 
 
 
