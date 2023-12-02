@@ -19,12 +19,11 @@ def create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly):
         fig.add_trace(go.Bar(
             x=mean_percentages_df.index,
             y=mean_percentages_df[column],
-            text=[f'{value:.1f}%' for value in mean_percentages_df[column]],
+            text=[f'{value:.1f}%' if pd.notna(value) and isinstance(value, (int, float)) else '' for value in mean_percentages_df[column]],
             hoverinfo='text',
             name=f'Nivel {column}',
             marker=dict(color=custom_palette_plotly[mean_percentages_df.columns.get_loc(column)])
         ))
-
     fig.update_layout(
         title='',
         xaxis_title='Áreas temáticas',
