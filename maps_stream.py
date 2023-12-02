@@ -167,10 +167,10 @@ st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, sel
 # Add an empty space between the two sections
 st.markdown("&nbsp;")
 
-# Create a select box for choosing the subject
-selected_subject = st.selectbox("Seleccione el área temática", list(areas.keys()))
+selected_subject = st.selectbox("Seleccione un área", list(areas.keys()))
+st.write(f"Showing data for {areas[selected_subject]}")
 
-# Create the top 30 institutions table
+# Call the function with the selected subject
 create_top_30_institutions_table(filtered_data, selected_subject)
 
 
