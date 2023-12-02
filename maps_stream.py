@@ -12,15 +12,7 @@ def load_data():
             icfes = pd.read_csv(file, delimiter='|')
     return icfes
 
-def create_stacked_bar_plot(data, custom_palette):
-    custom_palette_plotly = [f'rgb({int(color[0] * 255)},{int(color[1] * 255)},{int(color[2] * 255)})' for color in custom_palette]
-    
-    selected_columns = ['Matemáticas', 'Sociales', 'Ciencias naturales', 'Lectura crítica']
-    mean_percentages = [data[column].value_counts(normalize=True) * 100 for column in selected_columns]
-
-    mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
-    mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]].transpose()
-
+def create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly):
     fig = go.Figure()
 
     for column in mean_percentages_df.columns:
@@ -30,7 +22,7 @@ def create_stacked_bar_plot(data, custom_palette):
             text=[f'{value:.1f}%' for value in mean_percentages_df[column]],
             hoverinfo='text',
             name=f'Nivel {column}',
-            marker=dict(color=custom_palette_plotly[int(float(column)) - 1])
+            marker=dict(color=custom_palette_plotly[mean_percentages_df.columns.get_loc(column)])
         ))
 
     fig.update_layout(
@@ -125,6 +117,25 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Calculate the mean count percentage for each level (1 to 4) for each variable
+mean_percentages = []
+for column in selected_columns:
+    percentages = icfes[column].value_counts(normalize=True) * 100
+    mean_percentages.append(percentages)
+
+# Create a DataFrame for the stacked bar plot
+mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
+mean_percentages_df = mean_percentages_df[[1, 2, 3, 4]]
+
+# Convert the custom_palette to the Plotly color format
+custom_palette_plotly = [
+    f'rgb({int(color[0] * 255)},{int(color[1] * 255)},{int(color[2] * 255)})'
+    for color in custom_palette
+]
+
+# Transpose the DataFrame for horizontal bars
+mean_percentages_df = mean_percentages_df.transpose()
+
 # Create a layout with two columns
 col1, col2 = st.columns(2)
 
@@ -137,5 +148,5 @@ st.markdown("&nbsp;")
 
 # In the second column, display the top 30 institutions table
 with col2:
-    create_top_30_institutions_table(filtered_data, title="Custom Title for Top 30 Institutions:")
+    create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly)
 

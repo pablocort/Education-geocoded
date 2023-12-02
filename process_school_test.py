@@ -98,6 +98,29 @@ plt.show()
 
 
 
+######
+######
+# Select the columns for the variables you want to analyze
+selected_columns = ['Matemáticas', 
+                    'Sociales',
+                    'Ciencias naturales', 
+                    'Lectura crítica']
+
+custom_palette = [(0/255, 47/255, 135/255),  # RGB for the first color
+                  (121/255, 163/255, 220/255),  # RGB for the second color
+                  (232/255, 114/255, 0/255),  # RGB for the third color
+                  (245/255, 179/255, 53/255)]  # RGB for the fourth color
+
+# Calculate the mean count percentage for each level (1 to 4) for each variable
+mean_percentages = []
+for column in selected_columns:
+    percentages = icfes[column].value_counts(normalize=True) * 100
+    mean_percentages.append(percentages)
+
+# Create a DataFrame for the stacked bar plot
+mean_percentages_df = pd.DataFrame(mean_percentages, index=selected_columns)
+mean_percentages_df = mean_percentages_df[[1,2,3,4]]
+
 
 # Convert the custom_palette to the Plotly color format
 custom_palette_plotly = [
@@ -111,6 +134,7 @@ mean_percentages_df = mean_percentages_df.transpose()
 # Create a horizontal stacked bar plot for mean percentages using Plotly
 fig = go.Figure()
 
+fig = go.Figure()
 for column in mean_percentages_df.columns:
     fig.add_trace(go.Bar(
         x=mean_percentages_df.index,
@@ -118,7 +142,7 @@ for column in mean_percentages_df.columns:
         text=[f'{value:.1f}%' for value in mean_percentages_df[column]],
         hoverinfo='text',
         name=f'Nivel {column}',
-        marker=dict(color=custom_palette_plotly[int(column)-1]),
+        marker=dict(color=custom_palette_plotly[mean_percentages_df.columns.get_loc(column)]),
     ))
 
 # Customize the layout
