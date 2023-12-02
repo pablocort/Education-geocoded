@@ -167,7 +167,7 @@ st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, sel
 # Add an empty space between the two sections
 st.markdown("&nbsp;")
 
-selected_subject = st.selectbox("Seleccione un área", list(areas.keys()))
+selected_subject = st.selectbox("Seleccione un área", list(areas.values()))
 st.write(f"Showing data for {areas[selected_subject]}")
 
 # Call the function with the selected subject
