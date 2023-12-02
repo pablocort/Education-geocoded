@@ -136,36 +136,15 @@ st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, sel
 st.markdown("&nbsp;")
 
 # Create the top 30 institutions table
-create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:")
+top_30_institutions = create_top_30_institutions_table(filtered_data, title="Top 30 Institutions with Highest Median Scores:")
 
+# Apply custom style to the table to make it less wide
+table_styles = [
+    dict(selector="th", props=[("font-size", "10pt")]),
+    dict(selector="td", props=[("font-size", "10pt")]),
+    dict(selector=".css-9i1zmu", props=[("max-width", "300px")])  # Adjust the max-width as needed
+]
 
+st.table(top_30_institutions.set_index('Nombre de la institución')).set_style(table_styles)
 
-# Use custom CSS to widen the layout
-st.markdown(
-    """
-    <style>
-        .main {
-            max-width: 1200px;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-
-
-
-# Create a layout with two columns
-col1, col2 = st.columns(2)
-
-# In the first column, display the stacked bar plot
-with col1:
-    fig = create_stacked_bar_plot(filtered_data, custom_palette)
-
-# Add an empty space between the two columns
-st.markdown("&nbsp;")
-
-# In the second column, display the top 30 institutions table
-with col2:
-    create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly)
 
