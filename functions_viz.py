@@ -75,7 +75,7 @@ def create_top_30_institutions_table(filtered_data,
         .sort_values(by=[Puntaje_selected], ascending=True)
         .head(x)
     )
-    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 'punt_matematicas': f'Puntaje mediano en {selected_subject}'}
+    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', Puntaje_selected: f'Puntaje mediano en {selected_subject}'}
     
     st.write(f'## {title}')
     
