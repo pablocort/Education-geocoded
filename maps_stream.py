@@ -46,6 +46,13 @@ def create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected
 
     return fig
 
+areas = {"punt_matematicas": 'Matemáticas',
+       'punt_ingles': 'desemp_ingles', 
+       'punt_c_naturales':'Ciencias naturales', 
+       'punt_lectura_critica': 'Lectura crítica',
+       'punt_sociales_ciudadanas': 'Sociales'}
+
+
 def create_top_30_institutions_table(filtered_data, title="Top 30 de instituciones con desempeños más bajos:"):
     top_30_institutions = (
         filtered_data[filtered_data['Matemáticas'] == 1]
