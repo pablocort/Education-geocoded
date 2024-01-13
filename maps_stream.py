@@ -64,15 +64,12 @@ custom_palette_plotly = [
 ]
 
 
-# Add an empty space between the two sections
-st.markdown("&nbsp;")
+mean_percentages_df = mean_percentages_df.transpose()
 
 # Create the stacked bar plot
 st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
 
 # Add an empty space between the two sections
-st.markdown("&nbsp;")
-
 st.write(f"Showing data for {selected_city}")
 
 areas = [
