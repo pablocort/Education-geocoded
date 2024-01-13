@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 from functions_viz import load_data, create_stacked_bar_plot, create_top_30_institutions_table
 
 
+st.set_page_config(layout="wide")
 
 # Load data
 icfes = load_data()
@@ -88,3 +89,4 @@ with left_column:
 # Table on the right
 with right_column:
     create_top_30_institutions_table(filtered_data, selected_subject, 10)
+
