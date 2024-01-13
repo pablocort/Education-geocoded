@@ -67,8 +67,12 @@ custom_palette_plotly = [
 # Add an empty space between the two sections
 st.markdown("&nbsp;")
 
+# Create the stacked bar plot
+st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
 
-# Table on the right
+# Add an empty space between the two sections
+st.markdown("&nbsp;")
+
 st.write(f"Showing data for {selected_city}")
 
 areas = [
@@ -77,16 +81,9 @@ areas = [
     'Lectura crítica',
     'Sociales']
 
+
 selected_subject = st.selectbox("Seleccione un área", areas)
+#st.write(f"Showing data for {areas[selected_subject]}")
 
-# Use the columns method instead of beta_columns
-left_column, right_column = st.columns(2)
-
-# Graph on the left
-with left_column:
-    st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
-
-# Table on the right
-with right_column:
-    create_top_30_institutions_table(filtered_data, selected_subject, 10)
-
+# Call the function with the selected subject
+create_top_30_institutions_table(filtered_data,selected_subject, 10)
