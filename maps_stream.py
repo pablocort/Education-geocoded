@@ -75,15 +75,26 @@ with left_column:
 # Add an empty space between the two sections
 st.markdown("&nbsp;")
 
+
+# Table on the right
+st.write(f"Showing data for {selected_city}")
+    
+areas = [
+    'Matemáticas',
+    'Ciencias naturales', 
+    'Lectura crítica',
+    'Sociales']
+
+selected_subject = st.selectbox("Seleccione un área", areas)
+
+# Use the columns method instead of beta_columns
+left_column, right_column = st.columns(2)
+
+# Graph on the left
+with left_column:
+    st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
+
 # Table on the right
 with right_column:
-    st.write(f"Showing data for {selected_city}")
-    
-    areas = [
-        'Matemáticas',
-        'Ciencias naturales', 
-        'Lectura crítica',
-        'Sociales']
-
-    selected_subject = st.selectbox("Seleccione un área", areas)
     create_top_30_institutions_table(filtered_data, selected_subject, 10)
+    
