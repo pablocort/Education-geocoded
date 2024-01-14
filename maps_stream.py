@@ -5,7 +5,7 @@ import zipfile
 import plotly.graph_objects as go
 
 
-from functions_viz import load_data, create_stacked_bar_plot, create_top_30_institutions_table
+from functions_viz import load_data, create_stacked_bar_plot, create_top_institutions_table
 
 
 st.set_page_config(layout="wide")
@@ -83,5 +83,12 @@ areas = [
 selected_subject = st.selectbox("Seleccione un área", areas)
 #st.write(f"Showing data for {areas[selected_subject]}")
 
+num_institutions = st.selectbox("Seleccione el número de instituciones", [10, 20, 30])
+
 # Call the function with the selected subject
-create_top_30_institutions_table(filtered_data,selected_subject, 10)
+create_top_institutions_table(filtered_data, selected_subject, num_institutions)
+
+
+
+
+

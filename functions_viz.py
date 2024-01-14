@@ -53,11 +53,7 @@ areas = {"punt_matematicas": 'Matemáticas',
        'punt_lectura_critica': 'Lectura crítica',
        'punt_sociales_ciudadanas': 'Sociales'}
 
-
-def create_top_30_institutions_table(filtered_data, 
-                                     selected_subject,
-                                     x,
-                                     title="Top de instituciones con desempeños más bajos:"):
+def create_top_institutions_table(filtered_data, selected_subject, num_institutions, decimal_points=1, title="Top de instituciones con desempeños más bajos:"):
     if selected_subject == 'Matemáticas':
         Puntaje_selected = 'punt_matematicas'
     elif selected_subject == 'Ciencias naturales':
@@ -67,24 +63,28 @@ def create_top_30_institutions_table(filtered_data,
     elif selected_subject == 'Sociales':
         Puntaje_selected = 'punt_sociales_ciudadanas'
         
-    top_30_institutions = (
+    top_institutions = (
         filtered_data[filtered_data[selected_subject] == 1]
         .groupby('cole_nombre_establecimiento')[Puntaje_selected]
         .median()
         .reset_index()
         .sort_values(by=[Puntaje_selected], ascending=True)
-        .head(x)
+        .head(num_institutions)
     )
-    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', Puntaje_selected: f'Puntaje mediano en {selected_subject}'}
-    
-    st.write(f'## {title}')
-    
-    top_30_institutions.rename(columns=custom_column_names, inplace=True)
-    
+
+ # Rename columns
+    custom_column_names = {'cole_nombre_establecimiento': 'Nombre de la institución', 
+                           Puntaje_selected: 'Puntaje'}
+    top_institutions.rename(columns=custom_column_names, inplace=True)
+
+    # Set decimal points
+    top_institutions['Puntaje'] = top_institutions['Puntaje'].round(decimal_points)
+
+    # Set table styles
     table_styles = [
         dict(selector="th", props=[("font-size", "10pt")]),
         dict(selector="td", props=[("font-size", "10pt")]),
     ]
 
-    st.table(top_30_institutions.set_index('Nombre de la institución'))
-
+    # Display the table
+    st.table(top_institutions.set_index('Nombre de la institución').style.format({'Puntaje': f"{{:.{decimal_points}f}}"}).set_table_styles(table_styles))
