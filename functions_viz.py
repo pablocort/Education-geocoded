@@ -14,6 +14,7 @@ def load_data():
         csv_file_name = zip_file.namelist()[0]
         with zip_file.open(csv_file_name) as file:
             icfes = pd.read_csv(file, delimiter='|')
+            
     return icfes
 
 def load_data_geo():
@@ -102,24 +103,32 @@ def create_top_institutions_table(filtered_data, selected_subject, num_instituti
     # Display the table
     st.table(top_institutions.set_index('Nombre de la institución').style.format({'Puntaje': f"{{:.{decimal_points}f}}"}).set_table_styles(table_styles))
 
-def create_cluster_map(data, subject_column):
-    m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
+def create_cluster_map(data, selected_subject, selected_department):
+    # Filter data based on selected department and subject
+    filtered_data = data[(data['Departamento'] == selected_department) & (data[selected_subject].notna())]
+
+    # Create the map centered around the selected department
+    m = folium.Map(location=[filtered_data['LATITUD'].mean(), filtered_data['LONGITUD'].mean()], zoom_start=8)
 
     # Add marker clusters using FastMarkerCluster
-    marker_cluster = FastMarkerCluster(data[['latitud', 'longitud']].values).add_to(m)
+    marker_cluster = FastMarkerCluster(filtered_data[['LATITUD', 'LONGITUD']].values).add_to(m)
 
-    for index, row in data.iterrows():
-        folium.Marker([row['latitud'], row['longitud']],
-                      popup=f"{row['Nombre de la institución']} - Puntaje: {row[subject_column]}",
+    for index, row in filtered_data.iterrows():
+        folium.Marker([row['LATITUD'], row['LONGITUD']],
+                      popup=f"{row['Nombre de la institución']} - Puntaje: {row[selected_subject]}",
                       icon=None).add_to(marker_cluster)
 
     return m
 
-def create_heat_map(data, subject_column):
-    m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
+def create_heat_map(data, selected_subject, selected_department):
+    # Filter data based on selected department and subject
+    filtered_data = data[(data['Departamento'] == selected_department) & (data[selected_subject].notna())]
+
+    # Create the map centered around the selected department
+    m = folium.Map(location=[filtered_data['LATITUD'].mean(), filtered_data['LONGITUD'].mean()], zoom_start=8)
 
     # Add heat map layer
-    heat_data = [[row['latitud'], row['longitud']] for index, row in data.iterrows()]
+    heat_data = [[row['LATITUD'], row['LONGITUD']] for index, row in filtered_data.iterrows()]
     folium.plugins.HeatMap(heat_data).add_to(m)
 
     return m

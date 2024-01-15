@@ -14,6 +14,8 @@ st.set_page_config(layout="wide")
 
 # Load data
 icfes = load_data()
+icfes = icfes.rename(columns={'latitud': 'LATITUD',
+                                  'longitud':'LONGITUD'})
 geo = load_data_geo()
 
 # Set page configuration for wider margins
@@ -103,14 +105,14 @@ folium_static(create_cluster_map(filtered_geo_data, selected_subject), width=700
 # Add an empty space between the maps
 st.write("")
 
-# Display the heat map
-folium_static(create_heat_map(filtered_geo_data, selected_subject), width=700, height=500)
 
 # Display the cluster map
-folium_static(create_cluster_map(filtered_geo_data, selected_subject), width=700, height=500)
+st.write("Cluster Map")
+folium_static(create_cluster_map(icfes, selected_subject, selected_city), width=700, height=500)
 
 # Add an empty space between the maps
 st.write("")
 
 # Display the heat map
-folium_static(create_heat_map(filtered_geo_data, selected_subject), width=700, height=500)
+st.write("Heat Map")
+folium_static(create_heat_map(icfes, selected_subject, selected_city), width=700, height=500)
