@@ -98,6 +98,10 @@ create_top_institutions_table(filtered_data, selected_subject, num_institutions)
 # Filter the merged data based on the selected city and competencia
 filtered_geo_data = icfes[(icfes['Departamento'] == selected_city)]    
 
+for subject in areas:
+    icfes[subject] = pd.to_numeric(icfes[subject], errors='coerce')
+    icfes['LATITUD'] = pd.to_numeric(icfes['LATITUD'], errors='coerce')
+    icfes['LONGITUD'] = pd.to_numeric(icfes['LONGITUD'], errors='coerce')
 
 
 
