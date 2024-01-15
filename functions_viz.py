@@ -115,6 +115,7 @@ def create_cluster_map(data, subject_column):
 
     return m
 
+
 def create_heat_map(data, subject_column):
     m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
 

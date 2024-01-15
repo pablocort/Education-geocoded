@@ -96,13 +96,12 @@ filtered_geo_data = icfes[(icfes['Departamento'] == selected_city)]
 
 
 # Display the cluster map
-st.write(create_cluster_map(filtered_geo_data))
+st.folium_chart(create_cluster_map(filtered_geo_data, selected_subject))
 
 # Add an empty space between the maps
 st.write("")
 
 # Display the heat map
-st.write(create_heat_map(filtered_geo_data))
-
+st.folium_chart(create_heat_map(filtered_geo_data, selected_subject))
 
 
