@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
+from streamlit_folium import folium_static
 
 
 from functions_viz import load_data, create_stacked_bar_plot, create_top_institutions_table
@@ -96,12 +97,10 @@ filtered_geo_data = icfes[(icfes['Departamento'] == selected_city)]
 
 
 # Display the cluster map
-st.components.v1.html(create_cluster_map(filtered_geo_data, selected_subject), width=700, height=500)
+folium_static(create_cluster_map(filtered_geo_data, selected_subject), width=700, height=500)
 
 # Add an empty space between the maps
 st.write("")
 
 # Display the heat map
-st.components.v1.html(create_heat_map(filtered_geo_data, selected_subject), width=700, height=500)
-
-
+folium_static(create_heat_map(filtered_geo_data, selected_subject), width=700, height=500)
