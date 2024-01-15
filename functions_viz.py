@@ -106,10 +106,10 @@ def create_cluster_map(data, subject_column):
     m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
 
     # Add marker clusters using FastMarkerCluster
-    marker_cluster = FastMarkerCluster(data[['LATITUD', 'LONGITUD']].values).add_to(m)
+    marker_cluster = FastMarkerCluster(data[['latitud', 'longitud']].values).add_to(m)
 
     for index, row in data.iterrows():
-        folium.Marker([row['LATITUD'], row['LONGITUD']],
+        folium.Marker([row['latitud'], row['longitud']],
                       popup=f"{row['Nombre de la institución']} - Puntaje: {row[subject_column]}",
                       icon=None).add_to(marker_cluster)
 
@@ -119,7 +119,7 @@ def create_heat_map(data, subject_column):
     m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
 
     # Add heat map layer
-    heat_data = [[row['LATITUD'], row['LONGITUD']] for index, row in data.iterrows()]
+    heat_data = [[row['latitud'], row['longitud']] for index, row in data.iterrows()]
     folium.plugins.HeatMap(heat_data).add_to(m)
 
     return m
