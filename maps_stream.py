@@ -99,11 +99,6 @@ create_top_institutions_table(filtered_data, selected_subject, num_institutions)
 filtered_geo_data = icfes[(icfes['Departamento'] == selected_city)]    
 
 
-# Display the cluster map
-folium_static(create_cluster_map(filtered_geo_data, selected_subject), width=700, height=500)
-
-# Add an empty space between the maps
-st.write("")
 
 
 # Display the cluster map
