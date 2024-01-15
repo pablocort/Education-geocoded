@@ -14,9 +14,15 @@ st.set_page_config(layout="wide")
 
 # Load data
 icfes = load_data()
-icfes = icfes.rename(columns={'latitud': 'LATITUD',
-                                  'longitud':'LONGITUD'})
+
 geo = load_data_geo()
+
+
+icfes = icfes.merge(geo[["sede_codigo",'LONGITUD',	'LATITUD']], on = 'sede_codigo',
+             how = 'left', indicator = 'merge_geo_2')
+icfes = icfes[icfes['merge_geo_2'] == 'both']
+del(geo)
+
 
 # Set page configuration for wider margins
 #st.set_page_config(layout="wide")
