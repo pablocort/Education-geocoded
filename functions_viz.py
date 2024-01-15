@@ -105,7 +105,7 @@ def create_top_institutions_table(filtered_data, selected_subject, num_instituti
 
 def create_cluster_map(icfes, selected_subject, selected_city):
     # Filter data based on selected city and subject
-    filtered_data = icfes[(icfes['Ciudad'] == selected_city) & (icfes[selected_subject].notna())]
+    filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes[selected_subject].notna())]
 
     # Check if the filtered_data DataFrame is not empty
     if not filtered_data.empty:
