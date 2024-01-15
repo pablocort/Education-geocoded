@@ -110,7 +110,7 @@ def create_cluster_map(icfes, selected_subject, selected_city):
     # Check if the filtered_data DataFrame is not empty
     if not filtered_data.empty:
         # Specify the desired map location [latitude, longitude]
-        map_location = [-77,2766596697,	1,21546319771]
+        map_location = [-77.2766596697,	1.21546319771]
 
         # Create the map centered around the specified location
         m = folium.Map(location=map_location, zoom_start=8)
