@@ -104,21 +104,30 @@ def create_top_institutions_table(filtered_data, selected_subject, num_instituti
     st.table(top_institutions.set_index('Nombre de la institución').style.format({'Puntaje': f"{{:.{decimal_points}f}}"}).set_table_styles(table_styles))
 
 def create_cluster_map(icfes, selected_subject, selected_city):
-    m = folium.Map(location=[icfes['LATITUD'].mean(), icfes['LONGITUD'].mean()], zoom_start=8)
+    # Filter data based on selected city and subject
+    filtered_data = icfes[(icfes['Ciudad'] == selected_city) & (icfes[selected_subject].notna())]
 
-    for index, row in icfes.iterrows():
-        # Ensure 'selected_subject' is a valid column in your DataFrame
-        if selected_subject in icfes.columns:
-            # Access the value for the selected_subject in the current row
-            subject_score = row[selected_subject]
+    # Check if the filtered_data DataFrame is not empty
+    if not filtered_data.empty:
+        # Create the map centered around the selected city
+        m = folium.Map(location=[filtered_data['LATITUD'].mean(), filtered_data['LONGITUD'].mean()], zoom_start=8)
 
-            # Create the popup string
-            popup = f"{row['Nombre de la institución']} - Puntaje: {subject_score}"
+        for index, row in filtered_data.iterrows():
+            # Ensure 'selected_subject' is a valid column in your DataFrame
+            if selected_subject in filtered_data.columns:
+                # Access the value for the selected_subject in the current row
+                subject_score = row[selected_subject]
 
-            # Add a marker to the map with the popup
-            folium.Marker([row['LATITUD'], row['LONGITUD']], popup=popup).add_to(m)
+                # Create the popup string
+                popup = f"{row['Nombre de la institución']} - Puntaje: {subject_score}"
 
-    return m
+                # Add a marker to the map with the popup
+                folium.Marker([row['LATITUD'], row['LONGITUD']], popup=popup).add_to(m)
+
+        return m
+    else:
+        print(f"No data available for selected city '{selected_city}' and subject '{selected_subject}'.")
+
 
 def create_heat_map(data, selected_subject, selected_department):
     # Filter data based on selected department and subject
