@@ -113,11 +113,20 @@ for subject in areas:
 
 # Display the cluster map
 st.write("Cluster Map")
-folium_static(create_cluster_map(icfes, selected_subject, selected_city), width=700, height=500)
+
+map = create_cluster_map(icfes, selected_subject, selected_city)
+
+# Display the map
+folium_static(map, width=700, height=500)
+
 
 # Add an empty space between the maps
 st.write("")
 
 # Display the heat map
 st.write("Heat Map")
-folium_static(create_heat_map(icfes, selected_subject, selected_city), width=700, height=500)
+heat_map = create_heat_map(icfes, selected_subject, selected_city)
+
+# Display the heat map
+if heat_map:
+    folium_static(heat_map, width=700, height=500)

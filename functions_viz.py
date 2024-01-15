@@ -103,20 +103,20 @@ def create_top_institutions_table(filtered_data, selected_subject, num_instituti
     # Display the table
     st.table(top_institutions.set_index('Nombre de la institución').style.format({'Puntaje': f"{{:.{decimal_points}f}}"}).set_table_styles(table_styles))
 
-def create_cluster_map(data, selected_subject, selected_department):
-    # Filter data based on selected department and subject
-    filtered_data = data[(data['Departamento'] == selected_department) & (data[selected_subject].notna())]
+def create_cluster_map(icfes, selected_subject, selected_city):
+    m = folium.Map(location=[icfes['LATITUD'].mean(), icfes['LONGITUD'].mean()], zoom_start=8)
 
-    # Create the map centered around the selected department
-    m = folium.Map(location=[filtered_data['LATITUD'].mean(), filtered_data['LONGITUD'].mean()], zoom_start=8)
+    for index, row in icfes.iterrows():
+        # Ensure 'selected_subject' is a valid column in your DataFrame
+        if selected_subject in icfes.columns:
+            # Access the value for the selected_subject in the current row
+            subject_score = row[selected_subject]
 
-    # Add marker clusters using FastMarkerCluster
-    marker_cluster = FastMarkerCluster(filtered_data[['LATITUD', 'LONGITUD']].values).add_to(m)
+            # Create the popup string
+            popup = f"{row['Nombre de la institución']} - Puntaje: {subject_score}"
 
-    for index, row in filtered_data.iterrows():
-        folium.Marker([row['LATITUD'], row['LONGITUD']],
-                      popup=f"{row['Nombre de la institución']} - Puntaje: {row[selected_subject]}",
-                      icon=None).add_to(marker_cluster)
+            # Add a marker to the map with the popup
+            folium.Marker([row['LATITUD'], row['LONGITUD']], popup=popup).add_to(m)
 
     return m
 
@@ -124,11 +124,15 @@ def create_heat_map(data, selected_subject, selected_department):
     # Filter data based on selected department and subject
     filtered_data = data[(data['Departamento'] == selected_department) & (data[selected_subject].notna())]
 
-    # Create the map centered around the selected department
-    m = folium.Map(location=[filtered_data['LATITUD'].mean(), filtered_data['LONGITUD'].mean()], zoom_start=8)
+    # Check if the filtered_data DataFrame is not empty
+    if not filtered_data.empty:
+        # Create the map centered around the selected department
+        m = folium.Map(location=[filtered_data['LATITUD'].mean(), filtered_data['LONGITUD'].mean()], zoom_start=8)
 
-    # Add heat map layer
-    heat_data = [[row['LATITUD'], row['LONGITUD']] for index, row in filtered_data.iterrows()]
-    folium.plugins.HeatMap(heat_data).add_to(m)
+        # Add heat map layer
+        heat_data = [[row['LATITUD'], row['LONGITUD']] for index, row in filtered_data.iterrows()]
+        folium.plugins.HeatMap(heat_data).add_to(m)
 
-    return m
+        return m
+    else:
+        print("Filtered data is empty. Unable to create the heat map.")
