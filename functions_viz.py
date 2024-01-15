@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import zipfile
 import plotly.graph_objects as go
 import folium
-from folium import plugins
+from folium.plugins import FastMarkerCluster
 
 
 
@@ -105,8 +105,8 @@ def create_top_institutions_table(filtered_data, selected_subject, num_instituti
 def create_cluster_map(data, subject_column):
     m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
 
-    # Add marker clusters
-    marker_cluster = folium.MarkerCluster().add_to(m)
+    # Add marker clusters using FastMarkerCluster
+    marker_cluster = FastMarkerCluster(data[['LATITUD', 'LONGITUD']].values).add_to(m)
 
     for index, row in data.iterrows():
         folium.Marker([row['LATITUD'], row['LONGITUD']],
