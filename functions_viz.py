@@ -109,8 +109,11 @@ def create_cluster_map(icfes, selected_subject, selected_city):
 
     # Check if the filtered_data DataFrame is not empty
     if not filtered_data.empty:
-        # Create the map centered around the selected city
-        m = folium.Map(location=[filtered_data['LATITUD'].mean(), filtered_data['LONGITUD'].mean()], zoom_start=8)
+        # Specify the desired map location [latitude, longitude]
+        map_location = [-77,2766596697,	1,21546319771]
+
+        # Create the map centered around the specified location
+        m = folium.Map(location=map_location, zoom_start=8)
 
         for index, row in filtered_data.iterrows():
             # Ensure 'selected_subject' is a valid column in your DataFrame
@@ -122,7 +125,7 @@ def create_cluster_map(icfes, selected_subject, selected_city):
                 popup = f"{row['Nombre de la institución']} - Puntaje: {subject_score}"
 
                 # Add a marker to the map with the popup
-                folium.Marker([row['LATITUD'], row['LONGITUD']]).add_to(m)
+                folium.Marker([row['LATITUD'], row['LONGITUD']], popup=popup).add_to(m)
 
         return m
     else:
