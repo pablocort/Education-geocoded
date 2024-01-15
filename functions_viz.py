@@ -122,7 +122,7 @@ def create_cluster_map(icfes, selected_subject, selected_city):
                 popup = f"{row['Nombre de la institución']} - Puntaje: {subject_score}"
 
                 # Add a marker to the map with the popup
-                folium.Marker([row['LATITUD'], row['LONGITUD']], popup=popup).add_to(m)
+                folium.Marker([row['LATITUD'], row['LONGITUD']]).add_to(m)
 
         return m
     else:
