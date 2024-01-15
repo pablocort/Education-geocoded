@@ -3,6 +3,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import zipfile
 import plotly.graph_objects as go
+import folium
+from folium import plugins
+
 
 
 def load_data():
@@ -12,6 +15,16 @@ def load_data():
         with zip_file.open(csv_file_name) as file:
             icfes = pd.read_csv(file, delimiter='|')
     return icfes
+
+def load_data_geo():
+    zip_file_path = 'data/sedes_geo.zip'
+    with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
+        csv_file_name = zip_file.namelist()[0]
+        with zip_file.open(csv_file_name) as file:
+            icfes = pd.read_csv(file, delimiter='|')
+    return icfes
+
+
 
 def create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns):
     fig = go.Figure()
@@ -88,3 +101,25 @@ def create_top_institutions_table(filtered_data, selected_subject, num_instituti
 
     # Display the table
     st.table(top_institutions.set_index('Nombre de la institución').style.format({'Puntaje': f"{{:.{decimal_points}f}}"}).set_table_styles(table_styles))
+
+def create_cluster_map(data, subject_column):
+    m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
+
+    # Add marker clusters
+    marker_cluster = plugins.MarkerCluster().add_to(m)
+
+    for index, row in data.iterrows():
+        folium.Marker([row['LATITUD'], row['LONGITUD']],
+                      popup=f"{row['Nombre de la institución']} - Puntaje: {row[subject_column]}",
+                      icon=None).add_to(marker_cluster)
+
+    return m
+
+def create_heat_map(data, subject_column):
+    m = folium.Map(location=[4.5709, -74.2973], zoom_start=5)  # Set initial map location to Colombia
+
+    # Add heat map layer
+    heat_data = [[row['LATITUD'], row['LONGITUD']] for index, row in data.iterrows()]
+    plugins.HeatMap(heat_data).add_to(m)
+
+    return m

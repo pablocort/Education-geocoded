@@ -1,17 +1,18 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import zipfile
 import plotly.graph_objects as go
 
 
 from functions_viz import load_data, create_stacked_bar_plot, create_top_institutions_table
+from functions_viz import load_data_geo, create_cluster_map, create_heat_map
 
 
 st.set_page_config(layout="wide")
 
 # Load data
 icfes = load_data()
+geo = load_data_geo()
 
 # Set page configuration for wider margins
 #st.set_page_config(layout="wide")
@@ -89,6 +90,19 @@ num_institutions = st.selectbox("Seleccione el número de instituciones", [10, 2
 create_top_institutions_table(filtered_data, selected_subject, num_institutions)
 
 
+
+# Filter the merged data based on the selected city and competencia
+filtered_geo_data = icfes[(icfes['Departamento'] == selected_city)]    
+
+
+# Display the cluster map
+st.write(create_cluster_map(filtered_geo_data))
+
+# Add an empty space between the maps
+st.write("")
+
+# Display the heat map
+st.write(create_heat_map(filtered_geo_data))
 
 
 
