@@ -115,9 +115,10 @@ for subject in areas:
 st.write("Cluster Map")
 
 map = create_cluster_map_p(icfes, selected_subject, selected_city)
+st.plotly_chart(map, use_container_width=True)
 
 # Display the map
-folium_static(map, width=700, height=500)
+#folium_static(map, width=700, height=500)
 
 
 # Add an empty space between the maps
