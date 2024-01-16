@@ -97,7 +97,7 @@ selected_subject = st.selectbox("Seleccione un área", areas)
 num_institutions = st.selectbox("Seleccione el número de instituciones", [10, 20, 30])
 
 # Call the function with the selected subject
-create_top_institutions_table(filtered_data, selected_subject, num_institutions)
+#create_top_institutions_table(filtered_data, selected_subject, num_institutions)
 
 
 
