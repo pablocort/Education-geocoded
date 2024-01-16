@@ -8,7 +8,6 @@ import plotly.express as px
 
 
 
-
 def load_data():
     zip_file_path = 'data/icfes_performance.zip'
     with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
@@ -152,7 +151,6 @@ def create_heat_map(data, selected_subject, selected_department):
 
 
 
-import plotly.express as px
 
 def create_heat_map_p(icfes, selected_subject, selected_city):
     # Filter data based on selected city and subject
@@ -172,6 +170,33 @@ def create_heat_map_p(icfes, selected_subject, selected_city):
             color_continuous_scale="Viridis",  # You can change the color scale
             opacity=0.5,
         )
+        # Show the figure
+        return fig
+    else:
+        print(f"No data available for selected city '{selected_city}' and subject '{selected_subject}'.")
+        return px.density_mapbox() 
+    
+
+def create_heat_map_p_2(icfes, selected_subject, selected_city):
+    # Filter data based on selected city and subject
+    filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes[selected_subject].notna())]
+
+    # Check if the filtered_data DataFrame is not empty
+    if not filtered_data.empty:
+        # Create heat map using Plotly Express
+        fig = px.density_mapbox(
+            filtered_data,
+            lat='LATITUD',
+            lon='LONGITUD',
+            z=selected_subject,
+            radius=10,
+            center=dict(lat=filtered_data['LATITUD'].mean(), lon=filtered_data['LONGITUD'].mean()),  # Center around the mean coordinates
+            zoom=8,
+            mapbox_style="carto-positron",
+            color_continuous_scale="Viridis",  # You can change the color scale
+            opacity=0.5,
+        )
+
         # Show the figure
         return fig
     else:

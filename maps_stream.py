@@ -7,7 +7,7 @@ from streamlit_folium import folium_static
 
 
 from functions_viz import load_data, create_stacked_bar_plot, create_top_institutions_table
-from functions_viz import load_data_geo, create_heat_map_p
+from functions_viz import load_data_geo, create_heat_map_p_2
 
 
 st.set_page_config(layout="wide")
@@ -114,7 +114,7 @@ for subject in areas:
 # Display the cluster map
 st.write("Cluster Map")
 
-map = create_heat_map_p(icfes, selected_subject, selected_city)
+map = create_heat_map_p_2(icfes, selected_subject, 'ANTIOQUIA')
 st.plotly_chart(map, use_container_width=True)
 
 # Display the map
