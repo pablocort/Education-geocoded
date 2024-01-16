@@ -160,10 +160,7 @@ def create_cluster_map_p(icfes, selected_subject, selected_city):
 
     # Check if the filtered_data DataFrame is not empty
     if not filtered_data.empty:
-        # Specify the desired map location [latitude, longitude]
-        map_location = [-77.2766596697, 1.21546319771]
-
-        # Create the scatter map plot using Plotly Express
+        # Create scatter plot using Plotly Express
         fig = px.scatter_geo(
             filtered_data,
             lat='LATITUD',
@@ -177,10 +174,8 @@ def create_cluster_map_p(icfes, selected_subject, selected_city):
             projection='natural earth',  # You can choose a different projection
         )
 
-        # Update layout to set map center and zoom
-        fig.update_geos(center=dict(lon=map_location[1], lat=map_location[0]), projection_scale=5e5, showland=True)
-
         # Show the figure
         return fig
     else:
         print(f"No data available for selected city '{selected_city}' and subject '{selected_subject}'.")
+        return px.scatter_geo()  
