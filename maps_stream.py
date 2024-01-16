@@ -7,7 +7,7 @@ from streamlit_folium import folium_static
 
 
 from functions_viz import load_data, create_stacked_bar_plot, create_top_institutions_table
-from functions_viz import load_data_geo, create_cluster_map, create_heat_map
+from functions_viz import load_data_geo, create_cluster_map_p, create_heat_map
 
 
 st.set_page_config(layout="wide")
@@ -114,7 +114,7 @@ for subject in areas:
 # Display the cluster map
 st.write("Cluster Map")
 
-map = create_cluster_map(icfes, selected_subject, selected_city)
+map = create_cluster_map_p(icfes, selected_subject, selected_city)
 
 # Display the map
 folium_static(map, width=700, height=500)

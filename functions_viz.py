@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 import zipfile
 import plotly.graph_objects as go
 import folium
-from folium.plugins import FastMarkerCluster
+import plotly.express as px
+
 
 
 
@@ -148,3 +149,38 @@ def create_heat_map(data, selected_subject, selected_department):
         return m
     else:
         print("Filtered data is empty. Unable to create the heat map.")
+
+
+
+import plotly.express as px
+
+def create_cluster_map_p(icfes, selected_subject, selected_city):
+    # Filter data based on selected city and subject
+    filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes[selected_subject].notna())]
+
+    # Check if the filtered_data DataFrame is not empty
+    if not filtered_data.empty:
+        # Specify the desired map location [latitude, longitude]
+        map_location = [-77.2766596697, 1.21546319771]
+
+        # Create the scatter map plot using Plotly Express
+        fig = px.scatter_geo(
+            filtered_data,
+            lat='LATITUD',
+            lon='LONGITUD',
+            text='cole_nombre_establecimiento',
+            hover_name='cole_nombre_establecimiento',
+            hover_data={selected_subject: ':.2f'},
+            color=selected_subject,
+            color_continuous_scale='Viridis',  # You can change the color scale
+            size_max=15,
+            projection='natural earth',  # You can choose a different projection
+        )
+
+        # Update layout to set map center and zoom
+        fig.update_geos(center=dict(lon=map_location[1], lat=map_location[0]), projection_scale=5e5, showland=True)
+
+        # Show the figure
+        return fig
+    else:
+        print(f"No data available for selected city '{selected_city}' and subject '{selected_subject}'.")
