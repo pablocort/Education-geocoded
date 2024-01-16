@@ -154,28 +154,28 @@ def create_heat_map(data, selected_subject, selected_department):
 
 import plotly.express as px
 
-def create_cluster_map_p(icfes, selected_subject, selected_city):
+def create_heat_map_p(icfes, selected_subject, selected_city):
     # Filter data based on selected city and subject
     filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes[selected_subject].notna())]
 
     # Check if the filtered_data DataFrame is not empty
     if not filtered_data.empty:
-        # Create scatter plot using Plotly Express
-        fig = px.scatter_geo(
+        # Create heat map using Plotly Express
+        fig = px.density_mapbox(
             filtered_data,
             lat='LATITUD',
             lon='LONGITUD',
-            text='cole_nombre_establecimiento',
-            hover_name='cole_nombre_establecimiento',
-            hover_data={selected_subject: ':.2f'},
-            color=selected_subject,
-            color_continuous_scale='Viridis',  # You can change the color scale
-            size_max=15,
-            projection='natural earth',  # You can choose a different projection
+            z=selected_subject,
+            radius=10,
+            center=dict(lat=-77.2766596697, lon=1.21546319771),
+            zoom=8,
+            mapbox_style="carto-positron",
+            color_continuous_scale="Viridis",  # You can change the color scale
+            opacity=0.5,
         )
 
         # Show the figure
         return fig
     else:
         print(f"No data available for selected city '{selected_city}' and subject '{selected_subject}'.")
-        return px.scatter_geo()  
+        return px.density_mapbox() 
