@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-import folium
-from streamlit_folium import folium_static
+#from streamlit_folium import folium_static
 
 
 from functions_viz import load_data, create_stacked_bar_plot, create_top_institutions_table
@@ -32,6 +31,11 @@ del(geo)
 st.write("""
 # El siguiente tablero permite localizar aquellas instituciones que afrontan mayores retos en cuanto al desempeño en pruebas Saber 11
 """)
+
+# Sidebar with index and page selection
+selected_page = st.sidebar.radio("Navigate", ["Stacked Bar Plot", "Top Institutions Table", "Heat Map"])
+
+
 # Create a select box for city selection
 selected_city = st.selectbox("Seleccione un departamento", ['All'] + list(icfes['Departamento'].unique()))
 st.write(f"Showing data for {selected_city}")
@@ -78,56 +82,31 @@ custom_palette_plotly = [
 
 mean_percentages_df = mean_percentages_df.transpose()
 
-# Create the stacked bar plot
-#st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
 
-# Add an empty space between the two sections
-st.write(f"Showing data for {selected_city}")
-
-areas = [
+# Main content based on selected page
+if selected_page == "Stacked Bar Plot":
+    st.write(create_stacked_bar_plot(mean_percentages_df, custom_palette_plotly, selected_columns))
+elif selected_page == "Top Institutions Table":
+    areas = ['Matemáticas', 'Ciencias naturales', 'Lectura crítica', 'Sociales']
+    selected_subject = st.selectbox("Seleccione un área", areas)
+    num_institutions = st.selectbox("Seleccione el número de instituciones", [10, 20, 30])
+    create_top_institutions_table(filtered_data, selected_subject, num_institutions)
+elif selected_page == "Heat Map":
+    areas = [
     'Matemáticas',
     'Ciencias naturales', 
     'Lectura crítica',
     'Sociales']
 
+    for subject in areas:
+        icfes[subject] = pd.to_numeric(icfes[subject], errors='coerce')
+        icfes['LATITUD'] = pd.to_numeric(icfes['LATITUD'], errors='coerce')
+        icfes['LONGITUD'] = pd.to_numeric(icfes['LONGITUD'], errors='coerce')
+    st.write("Cluster Map")
+    selected_subject = st.selectbox("Seleccione un área", areas)
 
-selected_subject = st.selectbox("Seleccione un área", areas)
-#st.write(f"Showing data for {areas[selected_subject]}")
-
-num_institutions = st.selectbox("Seleccione el número de instituciones", [10, 20, 30])
-
-# Call the function with the selected subject
-#create_top_institutions_table(filtered_data, selected_subject, num_institutions)
-
-
-
-# Filter the merged data based on the selected city and competencia
-filtered_geo_data = icfes[(icfes['Departamento'] == selected_city)]    
-
-for subject in areas:
-    icfes[subject] = pd.to_numeric(icfes[subject], errors='coerce')
-    icfes['LATITUD'] = pd.to_numeric(icfes['LATITUD'], errors='coerce')
-    icfes['LONGITUD'] = pd.to_numeric(icfes['LONGITUD'], errors='coerce')
+    map = create_heat_map_p_2(icfes, selected_subject, selected_city)
+    st.plotly_chart(map, use_container_width=False)
 
 
 
-# Display the cluster map
-st.write("Cluster Map")
-
-map = create_heat_map_p_2(icfes, selected_subject, selected_city)
-st.plotly_chart(map, use_container_width=False)
-
-# Display the map
-#folium_static(map, width=700, height=500)
-
-
-# Add an empty space between the maps
-st.write("")
-
-# Display the heat map
-#st.write("Heat Map")
-#heat_map = create_heat_map(icfes, selected_subject, selected_city)
-
-# Display the heat map
-#if heat_map:
-#    folium_static(heat_map, width=700, height=500)
