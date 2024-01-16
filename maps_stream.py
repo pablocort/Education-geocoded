@@ -114,7 +114,7 @@ for subject in areas:
 # Display the cluster map
 st.write("Cluster Map")
 
-map = create_heat_map_p_2(icfes, selected_subject, 'ANTIOQUIA')
+map = create_heat_map_p_2(icfes, selected_subject, selected_city)
 st.plotly_chart(map, use_container_width=True)
 
 # Display the map

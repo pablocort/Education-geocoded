@@ -180,23 +180,26 @@ def create_heat_map_p(icfes, selected_subject, selected_city):
 def create_heat_map_p_2(icfes, selected_subject, selected_city):
     # Filter data based on selected city and subject
     filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes[selected_subject].notna())]
-
     # Check if the filtered_data DataFrame is not empty
     if not filtered_data.empty:
+        mean_latitude = filtered_data['LATITUD'].mean()
+        mean_longitude = filtered_data['LONGITUD'].mean()
         # Create heat map using Plotly Express
-        fig = px.density_mapbox(
-            filtered_data,
-            lat='LATITUD',
-            lon='LONGITUD',
-            z=selected_subject,
-            radius=10,
-            center=dict(lat=filtered_data['LATITUD'].mean(), lon=filtered_data['LONGITUD'].mean()),  # Center around the mean coordinates
-            zoom=8,
-            mapbox_style="carto-positron",
-            color_continuous_scale="Viridis",  # You can change the color scale
-            opacity=0.5,
-        )
-
+        fig = px.scatter_mapbox(filtered_data,
+                                lon=filtered_data['LONGITUD'], 
+                                lat=filtered_data['LATITUD'],
+                                zoom=5, 
+                                #radius= 3,
+                                center=dict(lat=mean_latitude, lon=mean_longitude),
+                                color=filtered_data['punt_sociales_ciudadanas'],
+                                size= filtered_data[selected_subject],
+                                width=1200, height=900,
+                                color_continuous_scale="Viridis",
+                                title='x'
+                                )
+        fig.update_layout(mapbox_style= 'open-street-map')
+        fig.update_layout(margin = {'r': 0, 't': 50, 'l':0, 'b':10})
+        
         # Show the figure
         return fig
     else:
