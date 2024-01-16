@@ -157,7 +157,6 @@ import plotly.express as px
 def create_heat_map_p(icfes, selected_subject, selected_city):
     # Filter data based on selected city and subject
     filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes[selected_subject].notna())]
-
     # Check if the filtered_data DataFrame is not empty
     if not filtered_data.empty:
         # Create heat map using Plotly Express
@@ -173,7 +172,6 @@ def create_heat_map_p(icfes, selected_subject, selected_city):
             color_continuous_scale="Viridis",  # You can change the color scale
             opacity=0.5,
         )
-
         # Show the figure
         return fig
     else:

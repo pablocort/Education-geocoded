@@ -7,7 +7,7 @@ from streamlit_folium import folium_static
 
 
 from functions_viz import load_data, create_stacked_bar_plot, create_top_institutions_table
-from functions_viz import load_data_geo, create_heat_map_p, create_heat_map
+from functions_viz import load_data_geo, create_heat_map_p
 
 
 st.set_page_config(layout="wide")
