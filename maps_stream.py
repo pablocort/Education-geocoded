@@ -124,9 +124,9 @@ folium_static(map, width=700, height=500)
 st.write("")
 
 # Display the heat map
-st.write("Heat Map")
-heat_map = create_heat_map(icfes, selected_subject, selected_city)
+#st.write("Heat Map")
+#heat_map = create_heat_map(icfes, selected_subject, selected_city)
 
 # Display the heat map
-if heat_map:
-    folium_static(heat_map, width=700, height=500)
+#if heat_map:
+#    folium_static(heat_map, width=700, height=500)
