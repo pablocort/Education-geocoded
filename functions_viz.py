@@ -181,9 +181,14 @@ def create_heat_map_p_2(icfes, selected_subject, selected_city):
     # Filter data based on selected city and subject
     filtered_data = icfes[(icfes['Departamento'] == selected_city) & (icfes[selected_subject].notna())]
     # Check if the filtered_data DataFrame is not empty
-    if not filtered_data.empty and selected_city not in ['All']:
+    if not filtered_data.empty:
         mean_latitude = filtered_data['LATITUD'].mean()
         mean_longitude = filtered_data['LONGITUD'].mean()
+        if selected_city == 'All':
+            selected_city = 'BOGOTÁ'
+        else:
+            selected_city = selected_city
+        
         # Create heat map using Plotly Express
         fig = px.scatter_mapbox(filtered_data,
                                 lon=filtered_data['LONGITUD'], 
